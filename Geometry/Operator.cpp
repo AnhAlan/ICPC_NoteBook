@@ -8,6 +8,18 @@
 */
 static const long double PI = acosl(-1.0L); //3.14
 
+/*
+    cw -> return angA > angB;
+    ccw -> angA < angB
+*/
+
+bool cmp(Point a, Point b) {
+    long double angA = atan2(a.y - p0.y, a.x - p0.x);
+    long double angB = atan2(b.y - p0.y, b.x - p0.x);
+    if (angA != angB) return angA < angB;
+    return dist(a, p0) < dist(b, p0);
+}
+
 
 struct Point {
     double x, y;
