@@ -6,6 +6,8 @@
     double area = a.cross(b)
     sort(a.begin(),a.end()) // if have a vector point
 */
+static const long double PI = acosl(-1.0L); //3.14
+
 
 struct Point {
     double x, y;
