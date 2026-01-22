@@ -138,6 +138,7 @@ int main() {
 
     loadGraph();
     prepare();
+    cout << "khop la : " << endl;
     for(int i=1;i<=numNode;i++){
         if(isCut[i]){
             cout << i << " ";

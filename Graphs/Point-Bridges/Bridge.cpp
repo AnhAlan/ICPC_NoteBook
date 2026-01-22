@@ -87,10 +87,10 @@ void dfs(int u){
 //set up
 void prepare(){
     fill(dsu,dsu+maxn,-1);
+    sort(edges + 1, edges +  m + 1);
     for(int i=1;i<=m;i++){
         uniset(edges[i].fi,edges[i].se);
     }
-    
     for(int i=1;i<=n;i++){
         dfs(i);
     }
