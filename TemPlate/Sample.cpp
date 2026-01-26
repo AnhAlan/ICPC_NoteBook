@@ -65,10 +65,10 @@ void dbg(const T& a, const Args&... args){
 }
 
 
-
-mt19937 ran(chrono::steady_clock::now().time_since_epoch().count());
-int rand(int l,int r){
-    return ran() % (r-l+1);
+mt19937_64 rng(chrono::steady_clock::now().time_since_epoch().count());
+ll rand(int l, int r){
+    uniform_int_distribution<ll> dist(l, r);
+    return dist(rng);
 }
 
 int main(){

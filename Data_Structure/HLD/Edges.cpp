@@ -2,23 +2,22 @@
 using namespace std;
 #define ll long long
 
-const int MAXN = 200005;
 
 int n, Q;
 vector<pair<int,int>> g[MAXN]; 
-int parent[MAXN], depth[MAXN], heavy[MAXN], head[MAXN], pos[MAXN], sz[MAXN];
-ll seg[MAXN*4+5], edge_weight[MAXN]; 
-int cur_pos = 1; 
+const int MAXN = 200005;
+int par[MAXN], high[MAXN], heavy[MAXN], head[MAXN], pos[MAXN], sz[MAXN];
+int cnt = 1; 
 int edge_to_node[MAXN]; 
 
 
 void dfs(int u, int p){
-    parent[u] = p;
+    par[u] = p;
     sz[u] = 1;
     int max_sz = 0;
     for(auto [v, idx] : g[u]){
         if(v == p) continue;
-        depth[v] = depth[u] + 1;
+        high[v] = high[u] + 1;
         dfs(v, u);
         sz[u] += sz[v];
         if(sz[v] > max_sz){
@@ -32,14 +31,15 @@ void dfs(int u, int p){
 
 void decompose(int u, int h){
     head[u] = h;
-    pos[u] = cur_pos++;
+    pos[u] = cnt++;
     if(heavy[u]) decompose(heavy[u], h);
     for(auto [v, idx] : g[u]){
-        if(v == parent[u] || v == heavy[u]) continue;
+        if(v == par[u] || v == heavy[u]) continue;
         decompose(v,v);
     }
 }
 
+ll seg[MAXN*4+5], edge_weight[MAXN]; 
 
 void build(int id, int l, int r){
     if(l == r){
@@ -74,12 +74,12 @@ ll query(int id,int l,int r,int ql,int qr){
 ll query_path(int u, int v){
     ll res = 0;
     while(head[u] != head[v]){
-        if(depth[head[u]] < depth[head[v]]) swap(u,v);
+        if(high[head[u]] < high[head[v]]) swap(u,v);
         res += query(1,1,n,pos[head[u]],pos[u]);
-        u = parent[head[u]];
+        u = par[head[u]];
     }
-    if(u==v) return res; //edge if node return one more query pos[u] -> pos[u]
-    if(depth[u] > depth[v]) swap(u,v);
+    if(u==v) return res; 
+    if(high[u] > high[v]) swap(u,v);
     res += query(1,1,n,pos[u]+1,pos[v]); 
     return res;
 }
@@ -97,7 +97,7 @@ int main(){
         edge_weight[i] = w; 
     }
 
-    depth[1] = 0;
+    high[1] = 0;
     dfs(1,0);
     decompose(1,1);
  

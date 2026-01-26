@@ -9,10 +9,6 @@
 #define se second
 using namespace std;
 
-const int MAX = 1e3;
-int matchL[MAX];
-int matchR[MAX];
-bool vis[MAX];
 vector<int>adj[MAX];
 int n,m,edges;
 
@@ -26,6 +22,11 @@ void load(){
         adj[u].push_back(v);
     }
 }
+
+const int MAX = 1e3;
+bool vis[MAX];
+int matchL[MAX];
+int matchR[MAX];
 
 bool dfs(int u){
     for(int v :adj[u]){
@@ -43,6 +44,8 @@ bool dfs(int u){
 }
 
 int maxMatching(int n){
+    memset(matchR,0,sizeof(matchR));
+    memset(matchL,0,sizeof(matchL));
     int res = 0;
 
     for(int u=1;u<=n;u++){
@@ -58,8 +61,6 @@ int main(){
     ios_base::sync_with_stdio(false);
     cin.tie(nullptr);
     load();
-    memset(matchR,0,sizeof(matchR));
-    memset(matchL,0,sizeof(matchL));
     cout << maxMatching(n) << en;
 
     for(int u=1;u<=n;u++){
