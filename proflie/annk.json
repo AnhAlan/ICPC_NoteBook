@@ -1,184 +1,220 @@
 {
-    "Fenwick Template": {
-        "prefix": "fren",
+
+    /*
+        ARUTHUS
+    */
+    "C++ Template": {
+        "prefix": "qa", 
         "body": [
-            "struct Fenwick {",
-            "    int n;",
-            "    vector<int> BIT;",
+            "/**",
+            " * created: ${CURRENT_YEAR}.${CURRENT_MONTH}.${CURRENT_DATE} ${CURRENT_HOUR}:${CURRENT_MINUTE}:${CURRENT_SECOND}",
+            " */",
+            "#include <bits/stdc++.h>",
+            "using namespace std;",
             "",
-            "    Fenwick(int n) : n(n), BIT(n+1, 0) {}",
+            "int main() {",
+            "    ios::sync_with_stdio(false);",
+            "    cin.tie(0);",
             "",
-            "    void update(int i, int val) {",
-            "        for (; i <= n; i += (i & -i)) {",
-            "            BIT[i] += val;",
-            "        }",
+            "    return 0;",
+            "}"
+        ],
+        "description": "C++ template của arthurs: annk"
+    },
+
+    //-------------------------------------------------------------------//
+
+    /*
+        TEMPLATE
+    */
+    "C++ Template with Macros": {
+        "prefix": "tem",
+        "body": [
+            "#define ll long long",
+            "#define all(a) a.begin(),a.end()",
+            "#define en \"\\n\"",
+            "#define bit(mask,i) (((mask)>>(i))&1)",
+            "#define MASK(x) (1 << (x))",
+            "#define fi first",
+            "#define se second",
+
+        ],
+        "description": "C++ template với macros của arthurs: annk"
+    },
+
+    //-------------------------------------------------------------------//
+
+    /*
+        DBG
+    */
+    "Debug Utility": {
+        "prefix": "dbg",
+        "body": [
+            "#define debug(...) cerr << \"[\" << #__VA_ARGS__ << \"] = \", dbg(__VA_ARGS__), cerr << \"\\n\"",
+            "",
+            "template<typename T1, typename T2>",
+            "ostream& operator<<(ostream& os, const pair<T1,T2>& p){",
+            "    os << \"{\" << p.first << \",\" << p.second << \"}\";",
+            "    return os;",
+            "}",
+            "",
+            "template<typename T>",
+            "ostream& operator<<(ostream& os,const vector<T>& v){",
+            "    os << \"{\";",
+            "    for(size_t i = 0;i<v.size();i++){",
+            "        os << v[i];",
+            "        if(i+1<v.size()) os << \",\";",
             "    }",
+            "    os << \"}\";",
+            "    return os;",
+            "}",
             "",
-            "    int query(int i) {",
-            "        int sum = 0;",
-            "        for (; i > 0; i -= (i & -i)) {",
-            "            sum += BIT[i];",
+            "template<typename T>",
+            "ostream& operator<<(ostream& os, const vector<vector<T>>& v) {",
+            "    os << \"{ \";",
+            "    for (size_t i = 0; i < v.size(); i++) {",
+            "        os << \"[\";",
+            "        for (size_t j = 0; j < v[i].size(); j++) {",
+            "            os << v[i][j];",
+            "            if (j + 1 < v[i].size()) os << \",\";",
             "        }",
-            "        return sum;",
+            "        os << \"] \";",
             "    }",
+            "    os << \" }\";",
+            "    return os;",
+            "}",
             "",
-            "    int rangeQuery(int l, int r) {",
-            "        return query(r) - query(l - 1);",
+            "void dbg() {}",
+            "",
+            "template<typename T, typename... Args>",
+            "void dbg(const T& a, const Args&... args){",
+            "    cerr << a;",
+            "    if(sizeof...(args)) cerr << \", \";",
+            "    dbg(args...);",
+            "}"
+        ],
+        "description": "Debug utility: macro + dbg function + ostream overloads"
+    },
+
+    //-------------------------------------------------------------------//
+
+    /*
+        RNG
+    */
+    "Random Number Generator": {
+        "prefix": "rng",
+        "body": [
+            "mt19937_64 rng(chrono::steady_clock::now().time_since_epoch().count());",
+            "ll rand(int l, int r){",
+            "    uniform_int_distribution<ll> dist(l, r);",
+            "    return dist(rng);",
+            "}"
+        ],
+        "description": "Random number generator mt19937 with ll return type"
+    },
+
+    //-------------------------------------------------------------------//
+
+    /*
+        TEST
+    */
+    "Test Data Generator": {
+        "prefix": "test",
+        "body": [
+            "#include <bits/stdc++.h>",
+            "",
+            "#define ll long long",
+            "using namespace std;",
+            "",
+            "mt19937_64 ran(chrono::steady_clock::now().time_since_epoch().count());",
+            "ll rand(int l,int r){",
+            "    uniform_int_distribution<ll> dist(l,r);",
+            "    return dist(ran);",
+            "}",
+            "",
+            "void rd_tree(){",
+            "    int n = rand(2,6);",
+            "    int m = rand(1,n-1);",
+            "    cout << n << \" \" << m << \"\\n\";",
+            "    vector<int> par(n+1);",
+            "    for(int i = 2; i <= n ;i++){",
+            "        par[i] = rand(1,i-1);",
+            "        cout << par[i] << \" \" << i << \"\\n\";",
+            "    }",
+            "}",
+            "",
+            "void rd_string(){",
+            "    int n = rand(2,100);",
+            "    string s(n, ' ');",
+            "    for(int i = 0; i < n; i++){",
+            "        s[i] = 'a' + rand(0,25);",
+            "    }",
+            "    cout << s << \"\\n\";",
+            "}",
+            "",
+            "void rd_graph(){",
+            "    int n = rand(2,10);",
+            "    int m = rand(2,10);",
+            "    set<pair<int,int>> seen;",
+            "    cout << n << \" \" << m << \"\\n\";",
+            "    for(int i=0;i<m;i++){",
+            "        int u = rand(1,n);",
+            "        int v = rand(1,n);",
+            "        int w = rand(1,10);",
+            "        while(u == v || seen.count({u,v})){",
+            "            u = rand(1,n);",
+            "            v = rand(1,n);",
+            "        }",
+            "        seen.insert({u,v});",
+            "        seen.insert({v,u});",
+            "        cout << u << \" \" << v << \" \" << w << \"\\n\";",
+            "    }",
+            "}",
+            "",
+            "void rd_vector(){",
+            "    int n = 10;",
+            "    vector<int> a(n);",
+            "    iota(a.begin(), a.end(), 1);",
+            "    shuffle(a.begin(), a.end(), ran);",
+            "    for(auto x : a) cout << x << \" \";",
+            "    cout << \"\\n\";",
+            "}",
+            "",
+            "int main(){",
+            "    ios_base::sync_with_stdio(false);",
+            "    cin.tie(nullptr);",
+            "    rd_graph();",
+            "}"
+        ],
+        "description": "Random test data generator for graph, tree, string, vector"
+    },
+
+    //-------------------------------------------------------------------//
+
+    /*
+        HASH - PAIR
+    */
+    "Hash Pair Struct": {
+        "prefix": "haspair",
+        "body": [
+            "struct hash_pair{",
+            "    template<class T1,class T2>",
+            "    size_t operator()(const pair<T1,T2>& p) const {",
+            "        auto h1 = hash<T1>()(p.first);",
+            "        auto h2 = hash<T2>()(p.second);",
+            "        return h1 ^ (h2 << 1);",
             "    }",
             "};"
         ],
-        "description": "Fenwick Tree (Binary Indexed Tree) template"
+        "description": "Hash function for unordered_map with pair keys"
     },
 
-    "LCA Binary Lifting Template": {
-        "prefix": "lca",
-        "body": [
-            "#define LOG 10",
-            "const int MAXN = 1000;",
-            "vector<int> adj[MAXN];",
-            "int par[MAXN][LOG+1];",
-            "int high[MAXN];",
-            "int n;",
-            "",
-            "void load() {",
-            "    cin >> n;",
-            "    for(int i = 1; i <= n-1; i++) {",
-            "        int u, v;",
-            "        cin >> u >> v;",
-            "        adj[u].push_back(v);",
-            "        adj[v].push_back(u);",
-            "    }",
-            "}",
-            "",
-            "void dfs(int u) {",
-            "    for(int v : adj[u]) {",
-            "        if(v != par[u][0]) {",
-            "            par[v][0] = u;",
-            "            high[v] = high[u] + 1;",
-            "            dfs(v);",
-            "        }",
-            "    }",
-            "}",
-            "",
-            "void build_lca() {",
-            "    for(int j = 1; j <= LOG; j++) {",
-            "        for(int i = 1; i <= n; i++) {",
-            "            if(par[i][j-1])",
-            "                par[i][j] = par[par[i][j-1]][j-1];",
-            "        }",
-            "    }",
-            "}",
-            "",
-            "int lca(int u, int v) {",
-            "    if(high[v] > high[u]) swap(u, v);",
-            "    for(int i = LOG; i >= 0; i--) {",
-            "        if(high[par[u][i]] >= high[v]) {",
-            "            u = par[u][i];",
-            "        }",
-            "    }",
-            "    if(u == v) return u;",
-            "    for(int i = LOG; i >= 0; i--) {",
-            "        if(par[u][i] != par[v][i]) {",
-            "            u = par[u][i];",
-            "            v = par[v][i];",
-            "        }",
-            "    }",
-            "    return par[u][0];",
-            "}"
-        ],
-        "description": "LCA Binary Lifting Template"
-    },
+    //-------------------------------------------------------------------//
 
-	"2D Point Geometry Template": {
-        "prefix": "point",
-        "body": [
-            "// Constants",
-            "const long double PI = acosl(-1.0L); // Pi",
-            "const double EPS = 1e-9; // Tolerance for comparing doubles",
-
-            "// Struct for 2D point / vector",
-            "struct Point {",
-            "    double x, y; // Coordinates",
-            "    Point(double x = 0, double y = 0) : x(x), y(y) {}",
-
-            "    // Vector addition / subtraction",
-            "    Point operator + (const Point &o) const { return Point(x + o.x, y + o.y); } // a + b",
-            "    Point operator - (const Point &o) const { return Point(x - o.x, y - o.y); } // a - b",
-            "    Point operator * (double k) const { return Point(x * k, y * k); } // Scale by k",
-            "    Point operator / (double k) const { return Point(x / k, y / k); } // Divide by k",
-
-            "    // Dot product: a·b = |a||b|cosθ",
-            "    double dot(const Point &o) const { return x * o.x + y * o.y; } // Used for angle, projection",
-
-            "    // Cross product (2D): a×b = signed area of parallelogram",
-            "    double cross(const Point &o) const { return x * o.y - y * o.x; }",
-            "    // Cross for 3 points: (b-a)×(c-a) >0 CCW, <0 CW, 0 collinear",
-            "    double cross(const Point &b, const Point &c) const { return (b - *this).cross(c - *this); }",
-
-            "    // Vector length |v| and squared length |v|^2",
-            "    double len() const { return sqrt(x*x + y*y); }",
-            "    double len2() const { return x*x + y*y; } // Avoid sqrt if not needed",
-
-            "    // Distance between points",
-            "    double dist(const Point &o) const { return (*this - o).len(); }",
-            "    double dist2(const Point &o) const { return (*this - o).len2(); } // Optimized for comparisons",
-
-            "    // Rotate around origin (0,0) by rad radians CCW",
-            "    Point rotate(double rad) const {",
-            "        double cosA = cos(rad), sinA = sin(rad);",
-            "        return Point(x * cosA - y * sinA, x * sinA + y * cosA);",
-            "    }",
-
-            "    // Rotate around another point o by rad radians CCW",
-            "    Point rotate(const Point &o, double rad) const {",
-            "        return (*this - o).rotate(rad) + o;",
-            "    }",
-
-            "    // Comparison for sorting: first by x, then by y",
-            "    bool operator < (const Point &o) const {",
-            "        if (fabs(x - o.x) > EPS) return x < o.x;",
-            "        return y < o.y;",
-            "    }",
-
-            "    // Equality check with tolerance EPS",
-            "    bool operator == (const Point &o) const {",
-            "        return fabs(x - o.x) < EPS && fabs(y - o.y) < EPS;",
-            "    }",
-            "};",
-
-            "// Reference point for polar sorting (convex hull, etc.)",
-            "Point p0;",
-
-            "// Polar angle comparison for sorting points CCW around p0",
-            "bool polar_cmp(const Point &a, const Point &b) {",
-            "    double angA = atan2(a.y - p0.y, a.x - p0.x);",
-            "    double angB = atan2(b.y - p0.y, b.x - p0.x);",
-            "    if (fabs(angA - angB) > EPS) return angA < angB;",
-            "    return a.dist2(p0) < b.dist2(p0); // Closer point first if same angle",
-            "}",
-
-            "// Orientation of 3 points: >0 CCW, <0 CW, =0 collinear",
-            "double orientation(const Point &a, const Point &b, const Point &c) {",
-            "    return (b - a).cross(c - a);",
-            "}",
-
-            "// Check if point c is on segment a-b",
-            "bool onSegment(const Point &a, const Point &b, const Point &c) {",
-            "    if (fabs(orientation(a,b,c)) > EPS) return false;",
-            "    return c.x >= min(a.x,b.x)-EPS && c.x <= max(a.x,b.x)+EPS &&",
-            "           c.y >= min(a.y,b.y)-EPS && c.y <= max(a.y,b.y)+EPS;",
-            "}",
-
-            "// Angle between 2 vectors a and b in radians",
-            "double angle(const Point &a, const Point &b) {",
-            "    double cosA = a.dot(b)/(a.len()*b.len());",
-            "    return acos(max(-1.0, min(1.0, cosA)));",
-            "}"
-        ],
-        "description": "2D Point geometry template (vector ops, cross, rotate, dist, orientation, polar sort) with English notes"
-    },
-	
-	"Sieve of Eratosthenes Template": {
+    /*
+        MATH
+    */
+    "Sieve of Eratosthenes Template": {
         "prefix": "sieve",
         "body": [
             "const int N = 1000000;",
@@ -197,8 +233,8 @@
         ],
         "description": "Sieve of Eratosthenes template for primes"
     },
-
-	"Sieve + SPF Factorization Template": {
+    
+    "Sieve + SPF Factorization Template": {
         "prefix": "spf",
         "body": [
             "const int N = 1000000;",
@@ -230,6 +266,221 @@
             "}"
         ],
         "description": "Sieve of Eratosthenes with SPF and factorization"
+    },
+
+    //-------------------------------------------------------------------//
+
+    /*
+        STRING
+    */
+    "Aho Corasick Trie": {
+        "prefix": "aho",
+        "body": [
+        "const int apl = 26;",
+        "const int maxn = 1000;",
+        "",
+        "struct trienode {",
+        "    trienode* child[apl];",
+        "    trienode* fail;",
+        "    trienode* next[apl];",
+        "    vector<int> found;",
+        "    trienode() {",
+        "        for (int i = 0; i < apl; i++) {",
+        "            child[i] = next[i] = nullptr;",
+        "        }",
+        "        fail = nullptr;",
+        "    }",
+        "};",
+        "",
+        "trienode node[maxn];",
+        "int cntnode = 0;",
+        "",
+        "trienode* create() {",
+        "    return &node[cntnode++];",
+        "}",
+        "",
+        "trienode* root = create();",
+        "",
+        "void add(string words, int id) {",
+        "    trienode* cur = root;",
+        "    for (char c : words) {",
+        "        if (!cur->child[c - 'a']) {",
+        "            cur->child[c - 'a'] = create();",
+        "        }",
+        "        cur = cur->child[c - 'a'];",
+        "    }",
+        "    cur->found.push_back(id);",
+        "}",
+        "",
+        "void ac_bfs() {",
+        "    root->fail = root;",
+        "    queue<trienode*> q;",
+        "",
+        "    for (int i = 0; i < 26; i++) {",
+        "        if (root->child[i]) {",
+        "            root->child[i]->fail = root;",
+        "            root->next[i] = root->child[i];",
+        "            q.push(root->child[i]);",
+        "        } else {",
+        "            root->next[i] = root;",
+        "        }",
+        "    }",
+        "",
+        "    while (!q.empty()) {",
+        "        trienode* u = q.front();",
+        "        q.pop();",
+        "        for (int i = 0; i < 26; i++) {",
+        "            trienode* v = u->child[i];",
+        "            if (v) {",
+        "                v->fail = u->fail->next[i];",
+        "                for (int id : v->fail->found) {",
+        "                    v->found.push_back(id);",
+        "                }",
+        "                q.push(v);",
+        "            }",
+        "            u->next[i] = v ? v : u->fail->next[i];",
+        "        }",
+        "    }",
+        "}"
+        ],
+        "description": "Aho-Corasick Trie with fail links"
+    },
+
+    "KMP String Matching (1-indexed)": {
+        "prefix": "kmp1d",
+        "body": [
+        "vector<int> kmp(${1:100}, 0);",
+        "int k = kmp[1] = 0;",
+        "",
+        "// Build prefix function",
+        "for (int i = 2; i <= m; i++) {",
+        "    while (k > 0 && s[i] != s[k + 1]) {",
+        "        k = kmp[k];",
+        "    }",
+        "    if (s[i] == s[k + 1]) {",
+        "        ++k;",
+        "    }",
+        "    kmp[i] = k;",
+        "}",
+        "",
+        "vector<int> match(${1:100}, 0);",
+        "k = match[1] = 0;",
+        "",
+        "// KMP matching",
+        "for (int i = 1; i <= n; i++) {",
+        "    while (k > 0 && t[i] != s[k + 1]) {",
+        "        k = kmp[k];",
+        "    }",
+        "    if (t[i] == s[k + 1]) {",
+        "        match[i] = ++k;",
+        "    }",
+        "    if (k == m) {",
+        "        cout << \"pos: \" << i - m + 1 << \"\\n\";",
+        "        k = kmp[k];",
+        "    }",
+        "}"
+        ],
+        "description": "KMP prefix function + pattern matching (1-indexed)"
+    },
+
+    "KMP 2D Prefix for All Suffixes": {
+        "prefix": "kmp2d",
+        "body": [
+        "int kmp[8009][8005];",
+        "",
+        "void process() {",
+        "    string s;",
+        "    cin >> s;",
+        "    s = \"#\" + s;",
+        "    int n = s.size() - 1;",
+        "",
+        "    for (int i = 1; i <= n; i++) {",
+        "        int k = 0;",
+        "        for (int j = 1; j <= n - i; j++) {",
+        "            while (k && s[j + i] != s[k + i]) {",
+        "                k = kmp[i][k - 1];",
+        "            }",
+        "            if (s[j + i] == s[k + i]) {",
+        "                ++k;",
+        "            }",
+        "            kmp[i][j] = k;",
+        "        }",
+        "    }",
+        "}"
+        ],
+        "description": "2D KMP prefix table for all suffixes (1-indexed)"
+    },
+
+    "Trie Basic (pointer + isEnd)": {
+        "prefix": "trie",
+        "body": [
+        "const int apl = 26;",
+        "const int maxn = 100000;",
+        "",
+        "struct TrieNode {",
+        "    TrieNode* child[apl];",
+        "    bool isEnd;",
+        "",
+        "    TrieNode() {",
+        "        for (int i = 0; i < apl; i++)",
+        "            child[i] = nullptr;",
+        "        isEnd = false;",
+        "    }",
+        "};",
+        "",
+        "TrieNode node[maxn];",
+        "int cntnode = 0;",
+        "",
+        "TrieNode* create() {",
+        "    return &node[cntnode++];",
+        "}",
+        "",
+        "TrieNode* root = create();",
+        "",
+        "void add(const string& s) {",
+        "    TrieNode* cur = root;",
+        "    for (char c : s) {",
+        "        int id = c - 'a';",
+        "        if (!cur->child[id])",
+        "            cur->child[id] = create();",
+        "        cur = cur->child[id];",
+        "    }",
+        "    cur->isEnd = true;",
+        "}"
+        ],
+        "description": "Basic Trie with pointers and isEnd flag"
+    },
+
+
+    //-------------------------------------------------------------------//
+
+    /*
+        GRAPHS
+    */
+    	"Dijkstra Template": {
+        "prefix": "dijkstra",
+        "body": [
+            "void dijkstra(int s) {",
+            "    vector<long long> d(n+1, INF);",
+            "    d[s] = 0;",
+            "    priority_queue<pair<long long,int>, vector<pair<long long,int>>, greater<pair<long long,int>>> Q;",
+            "    Q.push({0, s});",
+            "    while(!Q.empty()) {",
+            "        auto [w, u] = Q.top();",
+            "        Q.pop();",
+            "        if(w > d[u]) continue;",
+            "        for(auto it : adj[u]) {",
+            "            int v = it.first;",
+            "            long long kc_new = it.second;",
+            "            if(d[v] > d[u] + kc_new) {",
+            "                d[v] = d[u] + kc_new;",
+            "                Q.push({d[v], v});",
+            "            }",
+            "        }",
+            "    }",
+            "}"
+        ],
+        "description": "Dijkstra shortest path template using priority_queue"
     },
 
 	"DSU Template": {
@@ -269,31 +520,203 @@
         "description": "Disjoint Set Union (DSU) template"
     },
 
-	"Dijkstra Template": {
-        "prefix": "dijkstra",
+    "LCA Binary Lifting": {
+        "prefix": "lca",
         "body": [
-            "void dijkstra(int s) {",
-            "    vector<long long> d(n+1, INF);",
-            "    d[s] = 0;",
-            "    priority_queue<pair<long long,int>, vector<pair<long long,int>>, greater<pair<long long,int>>> Q;",
-            "    Q.push({0, s});",
-            "    while(!Q.empty()) {",
-            "        auto [w, u] = Q.top();",
-            "        Q.pop();",
-            "        if(w > d[u]) continue;",
-            "        for(auto it : adj[u]) {",
-            "            int v = it.first;",
-            "            long long kc_new = it.second;",
-            "            if(d[v] > d[u] + kc_new) {",
-            "                d[v] = d[u] + kc_new;",
-            "                Q.push({d[v], v});",
-            "            }",
-            "        }",
-            "    }",
+        "#define log 10",
+        "const int maxn = 1000;",
+        "int par[maxn][log + 1];",
+        "int high[maxn];",
+        "void dfs(int u) {",
+        "    for (int v : adj[u]) {",
+        "        if (v != par[u][0]) {",
+        "            par[v][0] = u;",
+        "            high[v] = high[u] + 1;",
+        "            dfs(v);",
+        "        }",
+        "    }",
+        "}",
+        "",
+        "void build_lca() {",
+        "    for (int j = 1; j <= log; j++) {",
+        "        for (int i = 1; i <= n; i++) {",
+        "            if (par[i][j - 1])",
+        "                par[i][j] = par[par[i][j - 1]][j - 1];",
+        "        }",
+        "    }",
+        "}",
+        "",
+        "int lca(int u, int v) {",
+        "    if (high[v] > high[u])",
+        "        return lca(v, u);",
+        "",
+        "    for (int i = log; i >= 0; i--) {",
+        "        if (par[u][i] && high[par[u][i]] >= high[v]) {",
+        "            u = par[u][i];",
+        "        }",
+        "    }",
+        "",
+        "    if (u == v) return u;",
+        "",
+        "    for (int i = log; i >= 0; i--) {",
+        "        if (par[u][i] != par[v][i]) {",
+        "            u = par[u][i];",
+        "            v = par[v][i];",
+        "        }",
+        "    }",
+        "    return par[u][0];",
+        "}"
+        ],
+        "description": "LCA using Binary Lifting (DFS + parent table)"
+    },
+
+    "Check Subtree / isSub": {
+        "prefix": "issub",
+        "body": [
+            "bool isSub(int u, int a) {",
+            "    return (num[u] <= num[a]) && (num[a] <= fin[u]);",
             "}"
         ],
-        "description": "Dijkstra shortest path template using priority_queue"
+        "description": "Check if node a is in subtree of node u using DFS numbering"
     },
+
+    "Binary Lifting / jump": {
+        "prefix": "jump",
+        "body": [
+            "int jump(int u, int k) {",
+            "    for (int j = LOG; j >= 0; j--) {",
+            "        if (MASK(j) <= k) {",
+            "            u = par[u][j];",
+            "            k -= MASK(j);",
+            "        }",
+            "    }",
+            "    return u;",
+            "}"
+        ],
+        "description": "Binary lifting: jump k-th ancestor of node u using MASK(j)"
+    },
+
+
+
+    "LCA Euler Tour RMQ": {
+        "prefix": "lca1",
+        "body": [
+        "const int maxn = 1000;",
+        "",
+        "int nodes[2 * maxn];",
+        "int pos[maxn];",
+        "int fin[maxn];",
+        "int cnt = 0;",
+        "int high[maxn];",
+        "",
+        "void dfs(int u, int par) {",
+        "    nodes[++cnt] = u;",
+        "    pos[u] = cnt;",
+        "    for (int v : adj[u]) {",
+        "        if (v != par) {",
+        "            high[v] = high[u] + 1;",
+        "            dfs(v, u);",
+        "            nodes[++cnt] = u;",
+        "        }",
+        "    }",
+        "    fin[u] = cnt;",
+        "}",
+        "",
+        "int MinHigh(int u, int v) {",
+        "    return high[u] < high[v] ? u : v;",
+        "}",
+        "",
+        "#define LOG 10",
+        "int minH[2 * maxn][maxn];",
+        "",
+        "void build() {",
+        "    for (int i = 1; i <= cnt; i++) {",
+        "        minH[i][0] = nodes[i];",
+        "    }",
+        "    for (int j = 1; j < LOG; j++) {",
+        "        for (int i = 1; i <= cnt - MASK(j) + 1; i++) {",
+        "            minH[i][j] = MinHigh(minH[i][j - 1], minH[i + MASK(j - 1)][j - 1]);",
+        "        }",
+        "    }",
+        "}",
+        "",
+        "int lca(int u, int v) {",
+        "    int pu = pos[u];",
+        "    int pv = pos[v];",
+        "    if (pu > pv) swap(pu, pv);",
+        "    int k = 31 - __builtin_clz(pv - pu + 1);",
+        "    return MinHigh(minH[pu][k], minH[pv - MASK(k) + 1][k]);",
+        "}",
+        "",
+        ],
+        "description": "LCA using Euler Tour + Sparse Table RMQ"
+    },
+
+    
+    "Floyd Warshall with Path Reconstruction": {
+        "prefix": "floyd",
+        "body": [
+        "const int INF = 1e9;",
+        "int d[505][505], r[505][505];",
+        "int n;",
+        "",
+        "// Reconstruct path from u to v",
+        "void route(int u, int v) {",
+        "    if (r[u][v] == 0) {",
+        "        cout << v << \" \";",
+        "    } else {",
+        "        route(u, r[u][v]);",
+        "        route(r[u][v], v);",
+        "    }",
+        "}",
+        "",
+        "// Floyd-Warshall",
+        "void floyd() {",
+        "    for (int k = 1; k <= n; k++) {",
+        "        for (int i = 1; i <= n; i++) {",
+        "            for (int j = 1; j <= n; j++) {",
+        "                if (d[i][k] < INF && d[k][j] < INF",
+        "                    && d[i][j] > d[i][k] + d[k][j]) {",
+        "                    d[i][j] = d[i][k] + d[k][j];",
+        "                    r[i][j] = k;",
+        "                }",
+        "            }",
+        "        }",
+        "    }",
+        "}"
+        ],
+        "description": "Floyd-Warshall with path reconstruction (route function)"
+    },
+
+
+    "Topological Sort DFS": {
+        "prefix": "topo",
+        "body": [
+        "bool check[1001];",
+        "vector<int> topo;",
+        "void dfs(int u) {",
+        "    check[u] = true;",
+        "",
+        "    for (int v : adj[u]) {",
+        "        if (!check[v]) {",
+        "            dfs(v);",
+        "        }",
+        "    }",
+        "",
+        "    // remember reverse(all(topo)) ",
+        "    topo.push_back(u);",
+        "}",
+        ],
+        "description": "Topological sort using DFS (post-order + reverse)"
+    },
+
+
+
+
+
+
+
+
 
 	"Dinic Max Flow Template": {
         "prefix": "dinic",
@@ -400,135 +823,476 @@
             "}"
         ],
         "description": "Bipartite Matching (Hungarian Algorithm) template"
-    },
+    },    
 
-	"Heavy-Light Decomposition Template": {
-        "prefix": "hld",
+
+    //-------------------------------------------------------------------//
+
+    /*
+        GEOMETRY
+    */
+    "2D Point Geometry Template": {
+        "prefix": "point",
         "body": [
-			"const int MAXN = 200005;",
-			"int par[MAXN], high[MAXN], heavy[MAXN], head[MAXN], pos[MAXN], sz[MAXN];",
-			"int cnt = 0; ",
-			"int edge_to_node[MAXN];",
-            "void dfs(int u, int p) {",
-            "    par[u] = p;",
-            "    sz[u] = 1;",
-            "    int max_sz = 0;",
-            "    for(auto [v, idx] : adj[u]) {",
-            "        if(v == p) continue;",
-            "        high[v] = high[u] + 1;",
-            "        dfs(v, u);",
-            "        sz[u] += sz[v];",
-            "        if(sz[v] > max_sz) {",
-            "            max_sz = sz[v];",
-            "            heavy[u] = v;",
-            "        }",
-            "        edge_to_node[idx] = v;",
-            "    }",
-            "}",
-            "",
-            "void decompose(int u, int h) {",
-            "    head[u] = h;",
-            "    pos[u] = ++cnt;",
-            "    if(heavy[u]) decompose(heavy[u], h);",
-            "    for(auto [v, idx] : adj[u]) {",
-            "        if(v == par[u] || v == heavy[u]) continue;",
-            "        decompose(v, v);",
-            "    }",
-            "}"
-        ],
-        "description": "Heavy-Light Decomposition (HLD) template for path queries on trees"
-    },
+            "// Constants",
+            "const long double PI = acosl(-1.0L); // Pi",
+            "const double EPS = 1e-9; // Tolerance for comparing doubles",
 
+            "// Struct for 2D point / vector",
+            "struct Point {",
+            "    double x, y; // Coordinates",
+            "    Point(double x = 0, double y = 0) : x(x), y(y) {}",
 
-	"Segment Tree with Lazy Template": {
-        "prefix": "seg",
-        "body": [
-            "struct Node {",
-            "    ll val;",
-            "    Node(ll _val = 0) {",
-            "        val = _val;",
+            "    // Vector addition / subtraction",
+            "    Point operator + (const Point &o) const { return Point(x + o.x, y + o.y); } // a + b",
+            "    Point operator - (const Point &o) const { return Point(x - o.x, y - o.y); } // a - b",
+            "    Point operator * (double k) const { return Point(x * k, y * k); } // Scale by k",
+            "    Point operator / (double k) const { return Point(x / k, y / k); } // Divide by k",
+
+            "    // Dot product: a·b = |a||b|cosθ",
+            "    double dot(const Point &o) const { return x * o.x + y * o.y; } // Used for angle, projection",
+
+            "    // Cross product (2D): a×b = signed area of parallelogram",
+            "    double cross(const Point &o) const { return x * o.y - y * o.x; }",
+            "    // Cross for 3 points: (b-a)×(c-a) >0 CCW, <0 CW, 0 collinear",
+            "    double cross(const Point &b, const Point &c) const { return (b - *this).cross(c - *this); }",
+
+            "    // Vector length |v| and squared length |v|^2",
+            "    double len() const { return sqrt(x*x + y*y); }",
+            "    double len2() const { return x*x + y*y; } // Avoid sqrt if not needed",
+
+            "    // Distance between points",
+            "    double dist(const Point &o) const { return (*this - o).len(); }",
+            "    double dist2(const Point &o) const { return (*this - o).len2(); } // Optimized for comparisons",
+
+            "    // Rotate around origin (0,0) by rad radians CCW",
+            "    Point rotate(double rad) const {",
+            "        double cosA = cos(rad), sinA = sin(rad);",
+            "        return Point(x * cosA - y * sinA, x * sinA + y * cosA);",
+            "    }",
+
+            "    // Rotate around another point o by rad radians CCW",
+            "    Point rotate(const Point &o, double rad) const {",
+            "        return (*this - o).rotate(rad) + o;",
+            "    }",
+
+            "    // Comparison for sorting: first by x, then by y",
+            "    bool operator < (const Point &o) const {",
+            "        if (fabs(x - o.x) > EPS) return x < o.x;",
+            "        return y < o.y;",
+            "    }",
+
+            "    // Equality check with tolerance EPS",
+            "    bool operator == (const Point &o) const {",
+            "        return fabs(x - o.x) < EPS && fabs(y - o.y) < EPS;",
             "    }",
             "};",
-            "",
-            "struct SegTree {",
-            "    int n;",
-            "    vector<Node> seg;",
-            "    vector<ll> lazy;",
-            "",
-            "    SegTree(int _n) : n(_n) {",
-            "        seg.assign(4*n, Node(0));",
-            "        lazy.assign(4*n, 0);",
-            "    }",
-            "",
-            "    void apply(int id, int l, int r, ll w) {",
-            "        seg[id].val = w;",
-            "        lazy[id] = w;",
-            "    }",
-            "",
-            "    void push(int id, int l, int r) {",
-            "        if(lazy[id] != 0) {",
-            "            int mid = (l + r) / 2;",
-            "            apply(id*2, l, mid, lazy[id]);",
-            "            apply(id*2+1, mid+1, r, lazy[id]);",
-            "            lazy[id] = 0;",
-            "        }",
-            "    }",
-            "",
-            "    void pull(int id) {",
-            "        seg[id].val = max(seg[id*2].val, seg[id*2+1].val);",
-            "    }",
-            "",
-            "    void build(int id, int l, int r, const vector<ll>& a) {",
-            "        lazy[id] = 0;",
-            "        if(l == r){",
-            "            seg[id] = Node(a[l]);",
-            "            return;",
-            "        }",
-            "        int mid = (l + r) / 2;",
-            "        build(id*2, l, mid, a);",
-            "        build(id*2+1, mid+1, r, a);",
-            "        pull(id);",
-            "    }",
-            "",
-            "    void update(int id, int l, int r, int u, int v, ll w) {",
-            "        if(r < u || v < l) return;",
-            "        if(u <= l && r <= v){",
-            "            apply(id, l, r, w);",
-            "            return;",
-            "        }",
-            "        push(id, l, r);",
-            "        int mid = (l + r) / 2;",
-            "        update(id*2, l, mid, u, v, w);",
-            "        update(id*2+1, mid+1, r, u, v, w);",
-            "        pull(id);",
-            "    }",
-            "",
-            "    void update_point(int id, int l, int r, int pos, ll w) {",
-            "        if(l == r){",
-            "            seg[id] = Node(w);",
-            "            lazy[id] = 0;",
-            "            return;",
-            "        }",
-            "        push(id, l, r);",
-            "        int mid = (l + r) / 2;",
-            "        if(pos <= mid) update_point(id*2, l, mid, pos, w);",
-            "        else update_point(id*2+1, mid+1, r, pos, w);",
-            "        pull(id);",
-            "    }",
-            "",
-            "    ll query(int id, int l, int r, int u, int v) {",
-            "        if(r < u || v < l) return LLONG_MIN;",
-            "        if(u <= l && r <= v) return seg[id].val;",
-            "        push(id, l, r);",
-            "        int mid = (l + r) / 2;",
-            "        return max(query(id*2, l, mid, u, v), query(id*2+1, mid+1, r, u, v));",
-            "    }",
+
+            "// Reference point for polar sorting (convex hull, etc.)",
+            "Point p0;",
+
+            "// Polar angle comparison for sorting points CCW around p0",
+            "bool polar_cmp(const Point &a, const Point &b) {",
+            "    double angA = atan2(a.y - p0.y, a.x - p0.x);",
+            "    double angB = atan2(b.y - p0.y, b.x - p0.x);",
+            "    if (fabs(angA - angB) > EPS) return angA < angB;",
+            "    return a.dist2(p0) < b.dist2(p0); // Closer point first if same angle",
+            "}",
+
+            "// Orientation of 3 points: >0 CCW, <0 CW, =0 collinear",
+            "double orientation(const Point &a, const Point &b, const Point &c) {",
+            "    return (b - a).cross(c - a);",
+            "}",
+
+            "// Check if point c is on segment a-b",
+            "bool onSegment(const Point &a, const Point &b, const Point &c) {",
+            "    if (fabs(orientation(a,b,c)) > EPS) return false;",
+            "    return c.x >= min(a.x,b.x)-EPS && c.x <= max(a.x,b.x)+EPS &&",
+            "           c.y >= min(a.y,b.y)-EPS && c.y <= max(a.y,b.y)+EPS;",
+            "}",
+
+            "// Angle between 2 vectors a and b in radians",
+            "double angle(const Point &a, const Point &b) {",
+            "    double cosA = a.dot(b)/(a.len()*b.len());",
+            "    return acos(max(-1.0, min(1.0, cosA)));",
             "}"
         ],
-        "description": "Segment Tree template with lazy propagation for range max update/query"
+        "description": "2D Point geometry template (vector ops, cross, rotate, dist, orientation, polar sort) with English notes"
     },
 
-     "Ordered Set (Unique Elements)": {
+    "Convex Hull Monotonic Chain": {
+        "prefix": "convex",
+        "body": [
+        "vector<Point> convexHull(vector<Point> v) {",
+        "    int n = v.size();",
+        "    if (n <= 2) return v;",
+        "",
+        "    sort(v.begin(), v.end());",
+        "",
+        "    vector<Point> ch(2 * n);",
+        "    int sz = 0;",
+        "",
+        "    // Lower hull",
+        "    for (int i = 0; i < n; i++) {",
+        "        while (sz > 1 && cross(ch[sz - 2], ch[sz - 1], v[i]) <= 0)",
+        "            sz--;",
+        "        ch[sz++] = v[i];",
+        "    }",
+        "",
+        "    // Upper hull",
+        "    for (int i = n - 2, up = sz; i >= 0; i--) {",
+        "        while (sz > up && cross(ch[sz - 2], ch[sz - 1], v[i]) <= 0)",
+        "            sz--;",
+        "        ch[sz++] = v[i];",
+        "    }",
+        "",
+        "    ch.resize(sz - 1);",
+        "    return ch;",
+        "}"
+        ],
+        "description": "Convex Hull using Monotonic Chain (Andrew's algorithm)"
+    },
+
+    "Closest Pair Divide & Conquer": {
+        "prefix": "close    ",
+        "body": [
+        "// Divide and conquer main function",
+        "double closestUtil(vector<Point>& Px, vector<Point>& Py, int l, int r) {",
+        "    int n = r - l + 1;",
+        "    if (n <= 3) return bruteForce(Px, l, r);",
+        "",
+        "    int mid = (l + r) / 2;",
+        "    double midx = Px[mid].x;",
+        "",
+        "    // Split Py into left/right",
+        "    vector<Point> Pyl, Pyr;",
+        "    for (auto& p : Py) {",
+        "        if (p.x <= midx) Pyl.push_back(p);",
+        "        else Pyr.push_back(p);",
+        "    }",
+        "",
+        "    double dl = closestUtil(Px, Pyl, l, mid);",
+        "    double dr = closestUtil(Px, Pyr, mid + 1, r);",
+        "    double d = min(dl, dr);",
+        "",
+        "    // make strip",
+        "    vector<Point> strip;",
+        "    for (auto& p : Py) {",
+        "        if (fabs(p.x - midx) < d) strip.push_back(p);",
+        "    }",
+        "",
+        "    // Check in strip",
+        "    for (int i = 0; i < (int)strip.size(); i++) {",
+        "        for (int j = i + 1; j < (int)strip.size() && j <= i + 7; j++) {",
+        "            d = min(d, dist(strip[i], strip[j]));",
+        "        }",
+        "    }",
+        "",
+        "    return d;",
+        "}",
+        "",
+        "double closestPair(vector<Point>& P) {",
+        "    int n = P.size();",
+        "    vector<Point> Px = P, Py = P;",
+        "    sort(Px.begin(), Px.end(), [](Point a, Point b) { return a.x < b.x; });",
+        "    sort(Py.begin(), Py.end(), [](Point a, Point b) { return a.y < b.y; });",
+        "    return closestUtil(Px, Py, 0, n - 1);",
+        "}"
+        ],
+        "description": "Closest pair of points using divide and conquer (O(n log n))"
+    },
+
+
+
+
+    //-------------------------------------------------------------------//
+
+    /*
+        DATA - STRUCTURES
+    */
+
+    "Fenwick Tree / BIT": {
+        "prefix": "fen",
+        "body": [
+        "struct FenwickTree {",
+        "    int n;",
+        "    vector<int> BIT;",
+        "",
+        "    FenwickTree(int n) : n(n) {",
+        "        BIT.assign(n + 1, 0);",
+        "    }",
+        "",
+        "    void update(int idx, int val) {",
+        "        for (; idx <= n; idx += (idx & -idx)) {",
+        "            BIT[idx] += val;",
+        "        }",
+        "    }",
+        "",
+        "    int query(int idx) {",
+        "        int res = 0;",
+        "        for (; idx > 0; idx -= (idx & -idx)) {",
+        "            res += BIT[idx];",
+        "        }",
+        "        return res;",
+        "    }",
+        "",
+        "    int rangeQuery(int l, int r) {",
+        "        return query(r) - query(l - 1);",
+        "    }",
+        "};"
+        ],
+        "description": "Fenwick Tree (Binary Indexed Tree) 1-indexed for point update and range sum"
+    },
+
+
+    "2D Fenwick Tree / BIT": {
+        "prefix": "fenwick2d",
+        "body": [
+        "struct FenwickTree2D {",
+        "    int n, m;",
+        "    vector<vector<long long>> BIT;",
+        "",
+        "    // Constructor",
+        "    FenwickTree2D(int n, int m) : n(n), m(m) {",
+        "        BIT.assign(n + 1, vector<long long>(m + 1, 0));",
+        "    }",
+        "",
+        "    // Update position (x, y) by val",
+        "    void update(int x, int y, int val) {",
+        "        for (int i = x; i <= n; i += i & -i) {",
+        "            for (int j = y; j <= m; j += j & -j) {",
+        "                BIT[i][j] += val;",
+        "            }",
+        "        }",
+        "    }",
+        "",
+        "    // Query prefix sum (1,1) to (x,y)",
+        "    long long query(int x, int y) {",
+        "        long long sum = 0;",
+        "        for (int i = x; i > 0; i -= i & -i) {",
+        "            for (int j = y; j > 0; j -= j & -j) {",
+        "                sum += BIT[i][j];",
+        "            }",
+        "        }",
+        "        return sum;",
+        "    }",
+        "",
+        "    // Query sum of rectangle (x1, y1) to (x2, y2)",
+        "    long long getSum(int x1, int y1, int x2, int y2) {",
+        "        return query(x2, y2)",
+        "             - query(x1 - 1, y2)",
+        "             - query(x2, y1 - 1)",
+        "             + query(x1 - 1, y1 - 1);",
+        "    }",
+        "};"
+        ],
+        "description": "2D Fenwick Tree (Binary Indexed Tree) for point update and rectangle sum"
+    },
+
+
+    "Sparse Table / RMQ": {
+        "prefix": "sparse",
+        "body": [
+        "const int MAXN = 1e6 + 5;",
+        "const int LOG = 20;",
+        "int n, a[MAXN];",
+        "int minV[MAXN][LOG]; // Sparse Table: minV[i][j] = min in [i,i+2^j-1]",
+        "",
+        "// Build Sparse Table",
+        "void build() {",
+        "    for (int i = 1; i <= n; i++)",
+        "        minV[i][0] = a[i]; // intervals of length 1",
+        "",
+        "    for (int j = 1; (1 << j) <= n; j++) {",
+        "        for (int i = 1; i + (1 << j) - 1 <= n; i++) {",
+        "            minV[i][j] = min(minV[i][j - 1], minV[i + (1 << (j - 1))][j - 1]);",
+        "        }",
+        "    }",
+        "}",
+        "",
+        "// Query minimum in range [l, r]",
+        "int getMin(int l, int r) {",
+        "    int k = 31 - __builtin_clz(r - l + 1); // floor(log2(length))",
+        "    return min(minV[l][k], minV[r - (1 << k) + 1][k]);",
+        "}"
+        ],
+        "description": "Sparse Table for Range Minimum Query (RMQ) O(n log n) build, O(1) query"
+    },
+
+
+    "MO's Algorithm / Distinct Count": {
+        "prefix": "mo",
+        "body": [
+        "const int MAXN = 100000 + 5;",
+        "int a[MAXN], cnt[MAXN], ans[MAXN];",
+        "int n, q, BLOCK;",
+        "int distinct = 0;",
+        "",
+        "struct Query {",
+        "    int l, r, id;",
+        "};",
+        "",
+        "// Comparator for MO's ordering",
+        "bool cmp(const Query &A, const Query &B) {",
+        "    int blockA = A.l / BLOCK;",
+        "    int blockB = B.l / BLOCK;",
+        "    if (blockA != blockB)",
+        "        return blockA < blockB;",
+        "    return A.r < B.r;",
+        "}",
+        "",
+        "// Add element x to current range",
+        "void add(int x) {",
+        "    cnt[x]++;",
+        "    if (cnt[x] == 1) distinct++;",
+        "}",
+        "",
+        "// Remove element x from current range",
+        "void remove_(int x) {",
+        "    cnt[x]--;",
+        "    if (cnt[x] == 0) distinct--;",
+        "}"
+        ],
+        "description": "MO's Algorithm template for distinct elements in range queries"
+    },
+
+
+    "Heavy-Light Decomposition": {
+        "prefix": "hld",
+        "body": [
+        "const int MAXN = 200005;",
+        "int par[MAXN], high[MAXN], heavy[MAXN], head[MAXN], pos[MAXN], sz[MAXN];",
+        "int cnt = 0;",
+        "int edge_to_node[MAXN];",
+        "",
+        "// DFS to compute sizes, parents, heavy child",
+        "void dfs(int u, int p) {",
+        "    par[u] = p;",
+        "    sz[u] = 1;",
+        "    int max_sz = 0;",
+        "    for (auto [v, idx] : adj[u]) {",
+        "        if (v == p) continue;",
+        "        high[v] = high[u] + 1;",
+        "        dfs(v, u);",
+        "        sz[u] += sz[v];",
+        "        if (sz[v] > max_sz) {",
+        "            max_sz = sz[v];",
+        "            heavy[u] = v;",
+        "        }",
+        "        edge_to_node[idx] = v;",
+        "    }",
+        "}",
+        "",
+        "// Decompose tree into heavy-light chains",
+        "void decompose(int u, int h) {",
+        "    head[u] = h;",
+        "    pos[u] = cnt++;",
+        "    if (heavy[u]) decompose(heavy[u], h);",
+        "    for (auto [v, idx] : g[u]) {",
+        "        if (v == par[u] || v == heavy[u]) continue;",
+        "        decompose(v, v);",
+        "    }",
+        "}"
+        ],
+        "description": "Heavy-Light Decomposition template for trees (dfs + decompose)"
+    },
+
+    "Segment Tree / Range Max with Lazy": {
+        "prefix": "seg",
+        "body": [
+        "struct Node {",
+        "    long long val;",
+        "    Node(long long _val = 0) { val = _val; }",
+        "};",
+        "",
+        "struct SegTree {",
+        "    int n;",
+        "    vector<Node> seg;",
+        "    vector<long long> lazy;",
+        "",
+        "    SegTree(int _n) : n(_n) {",
+        "        seg.assign(4*n, Node(0));",
+        "        lazy.assign(4*n, 0);",
+        "    }",
+        "",
+        "    void apply(int id, int l, int r, long long w) {",
+        "        seg[id].val = w;",
+        "        lazy[id] = w;",
+        "    }",
+        "",
+        "    void push(int id, int l, int r) {",
+        "        if (lazy[id] != 0) {",
+        "            int mid = (l + r) / 2;",
+        "            apply(id*2, l, mid, lazy[id]);",
+        "            apply(id*2+1, mid+1, r, lazy[id]);",
+        "            lazy[id] = 0;",
+        "        }",
+        "    }",
+        "",
+        "    void pull(int id) {",
+        "        seg[id].val = max(seg[id*2].val, seg[id*2+1].val);",
+        "    }",
+        "",
+        "    void build(int id, int l, int r, const vector<long long>& a) {",
+        "        lazy[id] = 0;",
+        "        if (l == r) {",
+        "            seg[id] = Node(a[l]);",
+        "            return;",
+        "        }",
+        "        int mid = (l + r) / 2;",
+        "        build(id*2, l, mid, a);",
+        "        build(id*2+1, mid+1, r, a);",
+        "        pull(id);",
+        "    }",
+        "",
+        "    void update(int id, int l, int r, int u, int v, long long w) {",
+        "        if (r < u || v < l) return;",
+        "        if (u <= l && r <= v) {",
+        "            apply(id, l, r, w);",
+        "            return;",
+        "        }",
+        "        push(id, l, r);",
+        "        int mid = (l + r) / 2;",
+        "        update(id*2, l, mid, u, v, w);",
+        "        update(id*2+1, mid+1, r, u, v, w);",
+        "        pull(id);",
+        "    }",
+        "",
+        "    void update_point(int id, int l, int r, int pos, long long w) {",
+        "        if (l == r) {",
+        "            seg[id] = Node(w);",
+        "            lazy[id] = 0;",
+        "            return;",
+        "        }",
+        "        push(id, l, r);",
+        "        int mid = (l + r) / 2;",
+        "        if (pos <= mid) update_point(id*2, l, mid, pos, w);",
+        "        else update_point(id*2+1, mid+1, r, pos, w);",
+        "        pull(id);",
+        "    }",
+        "",
+        "    long long query(int id, int l, int r, int u, int v) {",
+        "        if (r < u || v < l) return LLONG_MIN;",
+        "        if (u <= l && r <= v) return seg[id].val;",
+        "        push(id, l, r);",
+        "        int mid = (l + r) / 2;",
+        "        return max(query(id*2, l, mid, u, v),",
+        "                   query(id*2+1, mid+1, r, u, v));",
+        "    }",
+        "};"
+        ],
+        "description": "Segment Tree with Range Max + Lazy Propagation"
+    },
+
+
+
+    //-------------------------------------------------------------------//
+
+    /*
+        pb_ds
+    */
+    
+    "Ordered Set (Unique Elements)": {
         "prefix": "oset",
         "body": [
             "#include <ext/pb_ds/assoc_container.hpp>",
@@ -606,190 +1370,6 @@
     },
 
 
-    "C++ Template": {
-        "prefix": "qa", 
-        "body": [
-            "/**",
-            " * created: ${CURRENT_YEAR}.${CURRENT_MONTH}.${CURRENT_DATE} ${CURRENT_HOUR}:${CURRENT_MINUTE}:${CURRENT_SECOND}",
-            " */",
-            "#include <bits/stdc++.h>",
-            "using namespace std;",
-            "",
-            "int main() {",
-            "    ios::sync_with_stdio(false);",
-            "    cin.tie(0);",
-            "",
-            "    return 0;",
-            "}"
-        ],
-        "description": "C++ template của arthurs: annk"
-    },
 
-    "C++ Template with Macros": {
-        "prefix": "tem",
-        "body": [
-            "#define ll long long",
-            "#define all(a) a.begin(),a.end()",
-            "#define en \"\\n\"",
-            "#define bit(mask,i) (((mask)>>(i))&1)",
-            "#define MASK(x) (1 << (x))",
-            "#define debug(x) cerr << #x << \": \" << x << \"\\n\"",
-            "#define fi first",
-            "#define se second"
-        ],
-        "description": "C++ template với macros của arthurs: annk"
-    },
 
-    
-    "Debug Utility": {
-        "prefix": "dbg",
-        "body": [
-            "#define debug(...) cerr << \"[\" << #__VA_ARGS__ << \"] = \", dbg(__VA_ARGS__), cerr << \"\\n\"",
-            "",
-            "template<typename T1, typename T2>",
-            "ostream& operator<<(ostream& os, const pair<T1,T2>& p){",
-            "    os << \"{\" << p.first << \",\" << p.second << \"}\";",
-            "    return os;",
-            "}",
-            "",
-            "template<typename T>",
-            "ostream& operator<<(ostream& os,const vector<T>& v){",
-            "    os << \"{\";",
-            "    for(size_t i = 0;i<v.size();i++){",
-            "        os << v[i];",
-            "        if(i+1<v.size()) os << \",\";",
-            "    }",
-            "    os << \"}\";",
-            "    return os;",
-            "}",
-            "",
-            "template<typename T>",
-            "ostream& operator<<(ostream& os, const vector<vector<T>>& v) {",
-            "    os << \"{ \";",
-            "    for (size_t i = 0; i < v.size(); i++) {",
-            "        os << \"[\";",
-            "        for (size_t j = 0; j < v[i].size(); j++) {",
-            "            os << v[i][j];",
-            "            if (j + 1 < v[i].size()) os << \",\";",
-            "        }",
-            "        os << \"] \";",
-            "    }",
-            "    os << \" }\";",
-            "    return os;",
-            "}",
-            "",
-            "void dbg() {}",
-            "",
-            "template<typename T, typename... Args>",
-            "void dbg(const T& a, const Args&... args){",
-            "    cerr << a;",
-            "    if(sizeof...(args)) cerr << \", \";",
-            "    dbg(args...);",
-            "}"
-        ],
-        "description": "Debug utility: macro + dbg function + ostream overloads"
-    },
-
-    
-    "Random Number Generator": {
-        "prefix": "rng",
-        "body": [
-            "mt19937_64 rng(chrono::steady_clock::now().time_since_epoch().count());",
-            "ll rand(int l, int r){",
-            "    uniform_int_distribution<ll> dist(l, r);",
-            "    return dist(rng);",
-            "}"
-        ],
-        "description": "Random number generator mt19937 with ll return type"
-    },
-
-    
-    "Hash Pair Struct": {
-        "prefix": "haspair",
-        "body": [
-            "struct hash_pair{",
-            "    template<class T1,class T2>",
-            "    size_t operator()(const pair<T1,T2>& p) const {",
-            "        auto h1 = hash<T1>()(p.first);",
-            "        auto h2 = hash<T2>()(p.second);",
-            "        return h1 ^ (h2 << 1);",
-            "    }",
-            "};"
-        ],
-        "description": "Hash function for unordered_map with pair keys"
-    },
-
-    
-    "Test Data Generator": {
-        "prefix": "test",
-        "body": [
-            "#include <bits/stdc++.h>",
-            "",
-            "#define ll long long",
-            "using namespace std;",
-            "",
-            "mt19937_64 ran(chrono::steady_clock::now().time_since_epoch().count());",
-            "ll rand(int l,int r){",
-            "    uniform_int_distribution<ll> dist(l,r);",
-            "    return dist(ran);",
-            "}",
-            "",
-            "void rd_tree(){",
-            "    int n = rand(2,6);",
-            "    int m = rand(1,n-1);",
-            "    cout << n << \" \" << m << \"\\n\";",
-            "    vector<int> par(n+1);",
-            "    for(int i = 2; i <= n ;i++){",
-            "        par[i] = rand(1,i-1);",
-            "        cout << par[i] << \" \" << i << \"\\n\";",
-            "    }",
-            "}",
-            "",
-            "void rd_string(){",
-            "    int n = rand(2,100);",
-            "    string s(n, ' ');",
-            "    for(int i = 0; i < n; i++){",
-            "        s[i] = 'a' + rand(0,25);",
-            "    }",
-            "    cout << s << \"\\n\";",
-            "}",
-            "",
-            "void rd_graph(){",
-            "    int n = rand(2,10);",
-            "    int m = rand(2,10);",
-            "    set<pair<int,int>> seen;",
-            "    cout << n << \" \" << m << \"\\n\";",
-            "    for(int i=0;i<m;i++){",
-            "        int u = rand(1,n);",
-            "        int v = rand(1,n);",
-            "        int w = rand(1,10);",
-            "        while(u == v || seen.count({u,v})){",
-            "            u = rand(1,n);",
-            "            v = rand(1,n);",
-            "        }",
-            "        seen.insert({u,v});",
-            "        seen.insert({v,u});",
-            "        cout << u << \" \" << v << \" \" << w << \"\\n\";",
-            "    }",
-            "}",
-            "",
-            "void rd_vector(){",
-            "    int n = 10;",
-            "    vector<int> a(n);",
-            "    iota(a.begin(), a.end(), 1);",
-            "    shuffle(a.begin(), a.end(), ran);",
-            "    for(auto x : a) cout << x << \" \";",
-            "    cout << \"\\n\";",
-            "}",
-            "",
-            "int main(){",
-            "    ios_base::sync_with_stdio(false);",
-            "    cin.tie(nullptr);",
-            "    rd_graph();",
-            "}"
-        ],
-        "description": "Random test data generator for graph, tree, string, vector"
-    }
-
-	
 }
