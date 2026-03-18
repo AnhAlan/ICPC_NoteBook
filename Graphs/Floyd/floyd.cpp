@@ -3,16 +3,6 @@ const int INF = 1e9;
 int n, m;
 int dist[maxn][maxn], r[maxn][maxn]; 
 // u v w : dst[u][v] = w
-void route(int u, int v) {
-    if (r[u][v] == 0) {
-        cout << v << " ";
-    } 
-    else {
-        route(u, r[u][v]);
-        route(r[u][v], v);
-    }
-}
-
 void build_floyd(){
     for (int i = 1; i <= n; ++i){
         for (int j = 1; j <= n; ++j){
@@ -30,4 +20,14 @@ void build_floyd(){
         }
     }        
 }
+void route(int u, int v) {
+    if (r[u][v] == 0) {
+        cout << v << " ";
+    } 
+    else {
+        route(u, r[u][v]);
+        route(r[u][v], v);
+    }
+}
+
 
