@@ -26,7 +26,6 @@ int par[maxn][LOG];
 int numChild[maxn];
 int dsu[maxn];
 
-//dsu
 int find(int u){
     if(dsu[u] < 0){
         return u;
@@ -48,7 +47,6 @@ bool uniset(int u,int v){
     return true;
 }
 
-//input
 void load(){
     cin >> n >> m;
     for(int i=1;i<=m;i++){
@@ -60,11 +58,9 @@ void load(){
     }
 }
 
-//dsf
 int cnt = 0;
 void dfs(int u){
     low[u] = num[u] = ++cnt;
-
     for(int id : adj[u]){
         if(!visited[id]){
             visited[id] = true;
@@ -84,7 +80,6 @@ void dfs(int u){
     fin[u] = cnt;
 }
 
-//set up
 void prepare(){
     fill(dsu,dsu+maxn,-1);
     sort(edges + 1, edges +  m + 1);
@@ -107,12 +102,11 @@ void prepare(){
 
 }
 
-//cay con
 bool isSub(int u,int a){
     return(num[u] <= num[a]) && (num[a] <= fin[u]);
 }
 
-//jump
+
 int jump(int u,int k){
     for(int j=LOG;j>=0;j--){
         if(MASK(j) <= k){
@@ -128,7 +122,6 @@ bool solve(int u,int v,int a,int b){
         return false;
     }
     int id = lower_bound(edges+1,edges+m+1,make_pair(u,v)) - edges;
-    cout << "id: " << id << endl;
     if(isBridge[id]){
         return false;
     }
@@ -136,31 +129,5 @@ bool solve(int u,int v,int a,int b){
     bool inA = isSub(child,a);
     bool inB = isSub(child,b);
     return inA == inB;
-
-}
-
-int main(){
-    ios_base::sync_with_stdio(false);
-    cin.tie(nullptr);
-    load();
-    prepare();
-    cout << "hihi" << endl;
-    for(int i=1;i<=m;i++){
-        if(isBridge[i]){
-            cout << "id " << i << ": ";
-            cout << edges[i].fi << " " << edges[i].se << endl;
-        }
-    }
-    while(1){
-        int u,v,a,b;
-        cin >> u >> v >> a >> b;
-        if(solve(u,v,a,b)){
-            cout <<  "yes" << en; 
-        }
-        else{
-            cout << "no" << en;
-        }
-        cout.flush();
-    }
 
 }

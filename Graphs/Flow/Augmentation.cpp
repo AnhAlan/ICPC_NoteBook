@@ -1,72 +1,41 @@
-#include<bits/stdc++.h>
-#define ll long long
-#define all(a) a.begin(),a.end()
-#define en "\n"
-#define bit(mask,i) (((mask)>>(i))&1)
-#define MASK(x) (1 << (x))
-#define DEBUG(x) cerr << #x << ": " << x << en
-#define fi first
-#define se second
-using namespace std;
+struct Augmentation {
+    int n;                     
+    vector<vector<int>> adj;
+    vector<int> matchL, matchR;
+    vector<bool> vis;
 
-vector<int>adj[MAX];
-int n,m,edges;
-
-void load(){
-    cin >> n >> m;
-    cin >> edges;
-    //INPUT edges from u = 1 -> n And v = 1 - > m
-    for(int i=0;i<edges;i++){
-        int u,v;
-        cin >> u >> v;
+    Augmentation(int n_){
+        int n = _n;
+        adj.assign(n + 1, {});
+        matchL.assign(n + 1, 0);
+        matchR.assign(n + 1, 0);
+        vis.assign(n + 1, false);
+    }
+    void addEdge(int u, int v) {
         adj[u].push_back(v);
     }
-}
-
-const int MAX = 1e3;
-bool vis[MAX];
-int matchL[MAX];
-int matchR[MAX];
-
-bool dfs(int u){
-    for(int v :adj[u]){
-        if(!vis[v]){
-            vis[v] = true;
-
-            if(!matchR[v] || dfs(matchR[v]) ){
-                matchL[u] = v;
-                matchR[v] = u;
-                return true;
+    bool dfs(int u) {
+        for (int v : adj[u]) {
+            if (!vis[v]) {
+                vis[v] = true;
+                if (!matchR[v] || dfs(matchR[v])) {
+                    matchL[u] = v;
+                    matchR[v] = u;
+                    return true;
+                }
             }
         }
+        return false;
     }
-    return false;
-}
 
-int maxMatching(int n){
-    memset(matchR,0,sizeof(matchR));
-    memset(matchL,0,sizeof(matchL));
-    int res = 0;
-
-    for(int u=1;u<=n;u++){
-        memset(vis,0,sizeof(vis));
-        if(dfs(u)){
-            res++;
+    int Matching() {
+        fill(matchL.begin(), matchL.end(), 0);
+        fill(matchR.begin(), matchR.end(), 0);
+        int res = 0;
+        for (int u = 1; u <= n; u++) {
+            fill(vis.begin(), vis.end(), false);
+            if (dfs(u)) res++;
         }
+        return res;
     }
-    return res;
-}
-
-int main(){
-    ios_base::sync_with_stdio(false);
-    cin.tie(nullptr);
-    load();
-    cout << maxMatching(n) << en;
-
-    for(int u=1;u<=n;u++){
-        if(matchL[u]){
-            cout << u << "-> " << matchL[u] << en;
-        }
-    }
-    
-}
+};

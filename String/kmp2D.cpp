@@ -1,8 +1,9 @@
-int kmp[8009][8005];
-
-void process(){
-    string s;
-    cin >> s;
+//maxs <= 12000 for safe
+const int maxns = 8005;
+string s;
+int kmp[maxns][maxns];
+void build_kmp2d(){
+    //kmp[l][r] : substr(l,r)
     s = "#" + s;
     int n = s.size() - 1;
     for(int i=1;i<=n;i++){

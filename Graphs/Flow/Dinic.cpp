@@ -1,15 +1,11 @@
-#include <bits/stdc++.h>
-#define ll long long
-using namespace std;
-
-struct Edge {
+struct Edges {
     int to, rev;
     long long cap;
 };
 
 struct Dinic {
     int n;
-    vector<vector<Edge>> adj;
+    vector<vector<Edges>> adj;
     vector<int> level, ptr;
 
     Dinic(int _n) : n(_n) {
@@ -18,15 +14,12 @@ struct Dinic {
         ptr.assign(n + 1, 0);
     }
 
-    //a - > edges from u - > v with capacity cap
-    //b -> reverse edges from v -> u with capacity 0
-    void add(int u, int v, ll cap) {
+    void add(int u, int v, long long cap) {
         Edge a = {v, (int)adj[v].size(), cap}; // to, rev, cap
         Edge b = {u, (int)adj[u].size(), 0};   // reverse edge
         adj[u].push_back(a);
         adj[v].push_back(b);
     }
-
 
     bool bfs(int s, int t) {
         fill(level.begin(), level.end(), -1);
@@ -70,16 +63,8 @@ struct Dinic {
         }
         return flow;
     }
+    /*
+        Dinic dinic(7)
+        dinic.maxFlow(1,7) : soure -> sink
+    */
 };
-
-
-int main() {
-    ios::sync_with_stdio(false);
-    cin.tie(nullptr);
-    cout.tie(nullptr);
-    
-    //Soure -> Sink
-    Dinic d(7); // Sink = 7
-    cout << d.maxFlow(1,7); // maxFlow From 1 -> 7
-    
-}

@@ -1,26 +1,9 @@
-#include<bits/stdc++.h>
-#define ll long long
-using namespace std;
 
-#define log 10          
-const int maxn = 1000;
-vector<int> adj[maxn];  
-int par[maxn][log+1];   
+//2^log >= maxn
+const int LOG = 20;          
+const int maxn = 1e6 + 5;
+int par[maxn][LOG   +1];   
 int high[maxn];         
-int n;                  
-
-
-void load() {
-    cin >> n;
-    for(int i = 1; i <= n-1; i++) {
-        int u, v;
-        cin >> u >> v;      
-        adj[u].push_back(v);
-        adj[v].push_back(u);
-    }
-}
-
-
 void dfs(int u) {
     for(int v : adj[u]) {
         if(v != par[u][0]) { 
@@ -31,16 +14,14 @@ void dfs(int u) {
     }
 }
 
-
 void build_lca() {
-    for(int j = 1; j <= log; j++) {
+    for(int j = 1; j <= LOG; j++) {
         for(int i = 1; i <= n; i++) {
             if(par[i][j-1])
                 par[i][j] = par[par[i][j-1]][j-1]; 
         }
     }
 }
-
 
 int lca(int u, int v) {
     if(high[v] > high[u]) {

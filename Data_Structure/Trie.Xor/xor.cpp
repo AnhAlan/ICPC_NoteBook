@@ -1,18 +1,4 @@
-#include <bits/stdc++.h>
-
-#define ll long long
-#define all(a) a.begin(),a.end()
-#define en "\n"
-#define bit(mask,i) (((mask)>>(i))&1)
-#define MASK(x) (1 << (x))
-#define DEBUG(x) cerr << #x << ": " << x << en
-#define fi first
-#define se second
-
-using namespace std;
-
 const int maxn = 1e3;
-
 struct trienode{
     int child[2];
     int cnt;
@@ -29,8 +15,6 @@ int create(){
     //node[cnt_node] = trienode();
     return cnt_node++;
 }
-
-
 //add binary
 void insert(int k){
     int cur = root;
@@ -42,14 +26,6 @@ void insert(int k){
         }
         cur = node[cur].child[b];
         node[cur].cnt++;
-    }
-}
-
-//printf
-void in(){
-    int cur = 0;
-    for(int i=0;i<cnt_node;i++){
-        printf("node %d: %d %d cnt: %d\n",i,node[i].child[0],node[i].child[1],node[i].cnt);
     }
 }
 
@@ -122,7 +98,6 @@ int getmin_kth(int k){
         }
         
     }
-    cout << "K: " << k << en;
     return ans;
 }
 
@@ -208,12 +183,9 @@ int getmax_kth_xor(int k){
 
 //dfs
 void dfs(int cur,int val,int depth){
-
     if(node[cur].child[0] == -1 && node[cur].child[1] == -1){
-        cout << val << en;
         return;
     }
-
     for(int i=0;i<=1;i++){
         int nxt = node[cur].child[i];
         if(nxt != -1){
@@ -222,17 +194,3 @@ void dfs(int cur,int val,int depth){
     }
 }
 
-int main() {
-    ios::sync_with_stdio(false);
-    cin.tie(nullptr);
-    int n;
-    cin >> n;
-    vector<int>a(n);
-    for(auto &x : a){
-        cin >> x;
-        insert(x);
-    }
-    
-    dfs(0,0,3);
-
-}

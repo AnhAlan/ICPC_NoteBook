@@ -1,32 +1,25 @@
-
 const int MAXN = 1e5;
-const ll INF  = 1e18;
-int n,m;
-vector<pair<int,int>> adj[MAXN];
-
-
+const long long INF  = 1e18;;
 void dijstraka(int s){
-    vector<ll> d(n+1, INF);
-
+    vector<long long> d(n+1, INF);
     d[s] = 0;
-    priority_queue<pair<ll,int>,vector<pair<ll,int>>,greater<pair<ll,int>>> Q;
+    priority_queue<pair<long long,int>,vector<pair<long long,int>>,greater<pair<long long,int>>> Q;
     Q.push({0,s});
     while(!Q.empty()){
-        pair<ll,int> top = Q.top();
+        pair<long long,int> top = Q.top();
         Q.pop();
         int u = top.second;
-        ll w = top.first;
+        long long w = top.first;
         if(w > d[u]){
             continue;
         }
         for(auto it : adj[u]){
             int v = it.first;
-            ll kc_new = it.second;
-            if(d[v] > d[u] + kc_new){
-                d[v] = d[u] + kc_new;
+            long long new_dist = it.second;
+            if(d[v] > d[u] + new_dist){
+                d[v] = d[u] + new_dist;
                 Q.push({d[v],v});
             }
         }
     }
-    
 }

@@ -47,18 +47,14 @@ void loadGraph() {
 
 void dfs(int u) {
     num[u] = low[u] = ++cnt;
-
     for (int v : adj[u]) {
         if (!num[v]) {
             par[v][0] = u;
             high[v] = high[u] + 1;
             numChild[u]++;
-
             dfs(v);
-
             low[u] = min(low[u], low[v]);
-
-            if (par[u][0] != 0 && low[v] >= num[u]) {
+            if (par[u][0] != 0 && low[v] >= num[u]){
                 isCut[u] = true;
             }
         } 
@@ -96,14 +92,12 @@ void prepare() {
     }
 }
 
-
 bool inSubtree(int u, int v) {
     return (num[u] <= num[v] && num[v] <= fin[u]);
 }
 
-
 int jump(int u, int k) {
-    for(int j=LOG; j >= 0 ; j--){
+    for(int j = LOG; j >= 0 ; j--){
         if(MASK(j) <= k){
             u = par[u][j];
             k -= MASK(j);
@@ -111,7 +105,6 @@ int jump(int u, int k) {
     }
     return u;
 }
-
 
 bool checkCut(int a, int b, int u) {
     if (findSet(a) != findSet(b)) return false;
@@ -132,23 +125,3 @@ bool checkCut(int a, int b, int u) {
     return (childA == childB);
 }
 
-int main() {
-    ios::sync_with_stdio(false);
-    cin.tie(nullptr);
-
-    loadGraph();
-    prepare();
-    cout << "khop la : " << endl;
-    for(int i=1;i<=numNode;i++){
-        if(isCut[i]){
-            cout << i << " ";
-        }
-    }
-    cout << endl;
-    while(1){
-        int u,a,b;
-        cin >> u >> a >> b;
-        cout << (checkCut(a,b,u) ? "yes" : "no") << endl;
-        cout.flush();
-    }
-}

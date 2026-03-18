@@ -1,9 +1,6 @@
 const int N = 1e6;
-
 int primeDiv[N + 1];
-
 void sieve_spf(){
-        
     for (int i = 2; 1LL * i * i <= N; i++){
         if (primeDiv[i] == 0){
             for (int j = i * i; j <= N; j += i){ 
@@ -11,13 +8,11 @@ void sieve_spf(){
             }
         }
     }
-
     for (int i = 2; i <= N; i++){ 
-        if (primeDiv[i] == 0) {
+        if (primeDiv[i] == 0){
             primeDiv[i] = i;
         }
     }
-
 }
 
 vector<pair<int,int>>factor(int x){
@@ -31,6 +26,5 @@ vector<pair<int,int>>factor(int x){
         }
     }
     return res;
-
 }
 

@@ -1,5 +1,6 @@
 template<typename T>
 struct FenWick{
+    //update [l, r] & get(i)
     T n;
     vector<T>bit;
     FenWick(T _n){
@@ -21,7 +22,8 @@ struct FenWick{
         return res;
     }
 
-    T getRange(T l, T r){
-        return get(r) - get(l - 1);
+    void updateRange(T l, T r, T v){
+        update(l, v);
+        update(r + 1, -v);
     }
 };

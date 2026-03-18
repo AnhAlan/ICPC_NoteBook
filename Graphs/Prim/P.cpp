@@ -1,82 +1,54 @@
-#include<bits/stdc++.h>
-#define ll long long
-#define all(a) a.begin(),a.end()
-#define en "\n"
-using namespace std;
-const int MAXN = 1e5+5;
 
-struct canh{
-    int x,y,w;
+struct Edges {
+    int u, v, w;
+    Edges() {}
+    Edges(int _x, int _y, int _w) : u(_x), v(_y), w(_w) {}
 };
 
-int n,m;
-vector<pair<int,int>> adj[MAXN];
-bool used[MAXN];
-int parent[MAXN];
-int d[MAXN];
+int n, m;
+const int maxn = 100005;
+vector<pair<int,int>> adj[maxn];
+bool used[maxn];
+int parent[maxn];
+int d[maxn];
 
-void load(){
-    cin >> n >> m;
-    for(int i=0;i<m;i++){
-        int x,y,w;
-        cin >> x >> y >> w;
-        adj[x].push_back({y,w});
-        adj[y].push_back({x,w});
-    }
-
-    memset(used,false,sizeof(used));
-    for(int i=0;i<n;i++){
+void prim(int from){
+    for(int i = 1; i <= n; i++){
         d[i] = INT_MAX;
+        used[i] = false;
     }
-}
 
-void prim(int u){
-    priority_queue<pair<int,int>,vector<pair<int,int>>,greater<pair<int,int>>> Q;
-    vector<canh> MST;
-    int res = 0;
+    priority_queue<pair<int,int>, vector<pair<int,int>>, greater<pair<int,int>>> Q;
+    vector<Edges> MST;
+    long long res = 0;
 
-    Q.push({0,u});
-    d[u] = 0;
-    parent[u] = -1;
+    d[from] = 0;
+    parent[from] = -1;
+    Q.push({0, from});
 
     while(!Q.empty()){
-        pair<int,int> top = Q.top();
-        Q.pop();
-        int dinh = top.second;
-        int trongso = top.first;
+        auto top = Q.top(); Q.pop();
+        int u = top.second;
+        int w = top.first;
 
-        if(used[dinh]) continue;
+        if(used[u]) continue;
 
-        used[dinh] = true;
-        res += trongso;
+        used[u] = true;
+        res += w;
 
-        if(parent[dinh] != -1){
-            MST.push_back({dinh, parent[dinh], trongso});
+        if(parent[u] != -1){
+            MST.push_back(Edges(u, parent[u], w));
         }
-
-        for(auto it : adj[dinh]){
-            int y = it.first;
-            int w = it.second;
-            if(!used[y] && w < d[y]){
-                d[y] = w;
-                parent[y] = dinh;
-                Q.push({w, y});
+        for(auto it : adj[u]){
+            int v = it.first;
+            int new_w = it.second;
+            if(!used[v] && new_w < d[v]){
+                d[v] = new_w;
+                parent[v] = u;
+                Q.push({new_w, v});
             }
         }
     }
 
-    cout << res << en;
-}
-
-
-
-
-int main(){
-    ios_base::sync_with_stdio(false);
-    cin.tie(nullptr);
-    load();
-    prim(1);
-
-    return 0;
-    
+    cout << res << endl;
 }

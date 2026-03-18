@@ -1,9 +1,5 @@
-#include <bits/stdc++.h>
-using namespace std;
-
 const int apl = 26;
 const int maxn = 1e3;
-
 struct trienode{
     trienode* child[apl];
     trienode* fail;
@@ -19,13 +15,11 @@ struct trienode{
 
 trienode node[maxn];
 int cntnode = 0;
-
 trienode* create(){
     return &node[cntnode++];
 }
 
 trienode* root = create();
-
 void add(string words,int id){
     trienode* cur = root;
     for(char c : words){
@@ -71,36 +65,13 @@ void ac_bfs(){
 
 void process(string tmp){
     trienode* cur = root;
-    for(int i=0;i<(int)tmp.size();i++){
+    for(int i = 0; i < (int)tmp.size(); i++){
         cur = cur->next[tmp[i]-'a'];
         if(!cur->found.empty()){
-            cout << "match at " << i+1 << ": ";
+            //match 
             for(int id : cur->found){
-                cout << id << " ";
+
             }
-            cout << "\n";
         }
     }
-}
-
-void solve(){
-    int n;
-    cin >> n;
-
-    vector<string>words(n);
-    for(int i=0;i<n;i++){
-        cin >> words[i];
-        add(words[i],i+1);
-    }
-    ac_bfs();
-    string t;
-    cin >> t;
-    process(t);
-}
-
-int main() {
-    ios::sync_with_stdio(false);
-    cin.tie(nullptr);
-    solve();
-    return 0;
 }

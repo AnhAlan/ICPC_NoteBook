@@ -1,29 +1,26 @@
-#include <bits/stdc++.h>
-using namespace std;
-
 struct DSU {
-    vector<int> parent, Size;
+    vector<int> par, Size;
     int n;
     DSU(int _n) : n(_n) {
-        parent.resize(n+1);
+        par.resize(n+1);
         Size.resize(n+1);
         for(int i = 1; i <= n; i++) {
-            parent[i] = i;
+            par[i] = i;
             Size[i] = 1;
         }
     }
 
     int find(int a) {
-        if(parent[a] == a) return a;
-        return parent[a] = find(parent[a]);
+        if(par[a] == a) return a;
+        return par[a] = find(par[a]);
     }
-
+    
     void unite(int a, int b) {
         a = find(a);
         b = find(b);
         if(a == b) return;
         if(Size[a] < Size[b]) swap(a, b);
-        parent[b] = a;
+        par[b] = a;
         Size[a] += Size[b];
     }
 
