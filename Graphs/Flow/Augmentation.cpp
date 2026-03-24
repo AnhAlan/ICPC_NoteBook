@@ -5,7 +5,7 @@ struct Augmentation {
     vector<bool> vis;
 
     Augmentation(int n_){
-        int n = _n;
+        int n = n_;
         adj.assign(n + 1, {});
         matchL.assign(n + 1, 0);
         matchR.assign(n + 1, 0);

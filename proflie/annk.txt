@@ -8,10 +8,6 @@
     "C++ Template": {
         "prefix": "qa", 
         "body": [
-            "/**",
-            "   Aruthus: Annk",
-            "   created: ${CURRENT_YEAR}.${CURRENT_MONTH}.${CURRENT_DATE} ${CURRENT_HOUR}:${CURRENT_MINUTE}:${CURRENT_SECOND}",
-            "**/",
             "#include <bits/stdc++.h>",
             "using namespace std;",
             "",
@@ -1034,7 +1030,7 @@
             "    vector<bool> vis;",
             "",
             "    Augmentation(int n_){",
-            "        int n = _n;",
+            "        int n = n_;",
             "        adj.assign(n + 1, {});",
             "        matchL.assign(n + 1, 0);",
             "        matchR.assign(n + 1, 0);",
@@ -1526,6 +1522,7 @@
         "body": [
             "const int maxn = 1e6 + 5;",
             "const int LOG = 20;",
+            "int n;",
             "int a[maxn];",
             "int minV[maxn][LOG];",
             "",
