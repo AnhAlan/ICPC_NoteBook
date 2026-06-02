@@ -1,0 +1,15 @@
+template<typename T>
+class graph{
+    public:
+    struct Edge{
+        int from, to;
+        T cost;
+    };
+    int n;
+    vector<vector<int> > adj;
+    vector<Edge> edges;
+    graph(int _n) : n(_n){
+        adj.resize(n + 1);
+    }
+    virtual int add(int from, int to, T cost = 1) = 0;
+};

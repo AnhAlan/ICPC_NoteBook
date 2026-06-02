@@ -1,30 +1,33 @@
-const int N = 1e6;
-int primeDiv[N + 1];
-void sieve_spf(){
-    for (int i = 2; 1LL * i * i <= N; i++){
-        if (primeDiv[i] == 0){
-            for (int j = i * i; j <= N; j += i){ 
-                primeDiv[j] = i;
+struct Spf {
+    int n;
+    vector<int> spf;
+    Spf(int _n) {
+        n = _n;
+        spf.assign(n + 1, 0);
+    }
+    void build_spf() {
+        for (int i = 2; 1LL * i * i <= n; i++) {
+            if (spf[i] == 0) {
+                for (int j = i * i; j <= n; j += i) {
+                    if (spf[j] == 0) spf[j] = i;
+                }
             }
         }
-    }
-    for (int i = 2; i <= N; i++){ 
-        if (primeDiv[i] == 0){
-            primeDiv[i] = i;
+        for (int i = 2; i <= n; i++) {
+            if (spf[i] == 0) spf[i] = i;
         }
     }
-}
-
-vector<pair<int,int>>factor(int x){
-    vector<pair<int,int>>res;
-    while(x > 1){
-        int p =  primeDiv[x];
-        res.push_back({p,0});
-        while(x % p == 0){
-            res.back().second++;
-            x /= p;
+    vector<pair<int,int>> factor(int x) {
+        vector<pair<int,int>> res;
+        while (x > 1) {
+            int p = spf[x];
+            int cnt = 0;
+            while (x % p == 0) {
+                x /= p;
+                cnt++;
+            }
+            res.push_back({p, cnt});
         }
+        return res;
     }
-    return res;
-}
-
+};

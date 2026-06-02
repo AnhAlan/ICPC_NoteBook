@@ -1,0 +1,15 @@
+template<typename T>
+class undigraph : public graph<T> {
+    public:
+    using graph<T>:: adj;
+    using graph<T>:: edges;
+    using graph<T>:: n;
+    undigraph(int _n) : graph<T>(_n){}
+    int add(int from, int to, T cost = 1){
+        int id = (int) edges.size();
+        adj[from].push_back(id);
+        adj[to].push_back(id);
+        edges.push_back({from, to, cost});
+        return id;
+    }
+};

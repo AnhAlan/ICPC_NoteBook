@@ -1,33 +1,36 @@
-struct Hash{
+struct Hash {
     string s;
-    static const int maxn = 1e3 + 5;
-    const int mod1 = (int)1e9 + 7;
-    const int mod2 = (int)1e9 + 9277;
-    long long pw1[maxn], pw2[maxn];
-    long long hs1[maxn], hs2[maxn];
-    int base = 256;
-    Hash(string _s){
-        s = "#" + _s;
+    int n;
+    const long long MOD1 = 1e9 + 7;
+    const long long MOD2 = 1e9 + 8277;
+    const long long BASE = 256;
+    vector<long long> pw1, pw2;
+    vector<long long> has1, has2;
+    Hash(string _s) {
+        s = "*" + _s;
+        n = _s.size();
+        pw1.resize(n + 1);
+        pw2.resize(n + 1);
+        has1.resize(n + 1);
+        has2.resize(n + 1);
     }
-
-    void build(){
-        int n = s.size();
-        pw1[0] = pw2[0] = 1; 
-        for(int i = 1; i <= maxn; i++){
-            pw1[i] = 1ll * pw1[i - 1] * base % mod1;
-            pw2[i] = 1ll * pw2[i - 1] * base % mod2;
-        }
-        for(int i = 1; i <= n; i++){
-            hs1[i] = (hs1[i - 1] + 1ll * s[i] * pw1[i]) % mod1;
-            hs2[i] = (hs2[i - 1] + 1ll * s[i] * pw2[i]) % mod2;
+    void build_hash() {
+        pw1[0] = pw2[0] = 1;
+        has1[0] = has2[0] = 0;
+        for (int i = 1; i <= n; i++) {
+            pw1[i] = pw1[i - 1] * BASE % MOD1;
+            pw2[i] = pw2[i - 1] * BASE % MOD2;
+            has1[i] = (has1[i - 1] * BASE + s[i]) % MOD1;
+            has2[i] = (has2[i - 1] * BASE + s[i]) % MOD2;
         }
     }
-
-    pair<long long,long long> getHash(int l, int r){
-        long long res1 = (hs1[r] - hs1[l - 1] + mod1) % mod1;
-        long long res2 = (hs2[r] - hs2[l - 1] + mod2) % mod2;
-        res1 = res1 * (pw1[maxn - r]) % mod1;
-        res2 = res2 * (pw2[maxn - r]) % mod2;
-        return {res1, res2};
+    pair<long long, long long> get_hash(int l, int r) {
+        long long x1 =
+        (has1[r] - has1[l - 1] * pw1[r - l + 1]) % MOD1;
+        long long x2 =
+        (has2[r] - has2[l - 1] * pw2[r - l + 1]) % MOD2;
+        if (x1 < 0) x1 += MOD1;
+        if (x2 < 0) x2 += MOD2;
+        return {x1, x2};
     }
 };
