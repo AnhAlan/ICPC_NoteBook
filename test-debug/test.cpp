@@ -1,10 +1,9 @@
 #include <bits/stdc++.h>
 using namespace std;
-using ll = long long;
 
 mt19937_64 ran(chrono::steady_clock::now().time_since_epoch().count());
-ll rand(ll l,ll r){
-    uniform_int_distribution<ll> dist(l,r);
+long long rand(long long l,long long r){
+    uniform_int_distribution<long long> dist(l,r);
     return dist(ran);
 }
 
@@ -17,7 +16,7 @@ vector<tuple<int, int, int>> random_tree(int n) {
     for (int i = 1; i < n; i++) {
         int u = vertices[i];
         int v = vertices[rand(0, i - 1)]; 
-        ll w = rand(1, 10000);           
+        long long w = rand(1, 10000);           
         edges.push_back({u, v, w});
     }
     shuffle(edges.begin(), edges.end(), ran);
@@ -31,7 +30,7 @@ string random_string(int n){
     return s;
 }
 vector<tuple<int,int,int> > random_graph(int n, int m){
-    long long max_edges = 1LL * n * (n - 1) / 2;
+    long long max_edges = 1long long * n * (n - 1) / 2;
     if (m > max_edges) m = max_edges; 
     vector<tuple<int,int,int> > adj;
     set<pair<int,int>> seen;
@@ -58,6 +57,6 @@ vector<int> random_vector(int n){
 
 int main(){
     ios_base::sync_with_stdio(false);
-    cin.tie(nullptr);
+    cin.tie(nulong longptr);
     
 }

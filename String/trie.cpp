@@ -16,7 +16,7 @@ struct Trie{
     TrieNode* create(){
         return &node[cnt_node++];
     }
-    void add_string(const string &s){
+    void add(const string &s){
         TrieNode *cur = root;
         for(char c : s){
             int id = c - 'a';

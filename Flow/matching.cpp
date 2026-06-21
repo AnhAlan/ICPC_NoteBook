@@ -53,14 +53,14 @@ struct HopCroft{
         return false;
     }
     int max_matching(){
-        int res = 0;
+        int cnt = 0;
         while(bfs()){
             for(int u = 1; u <= n; u++){
                 if(!pairU[u] && dfs(u)){
-                    res++;
+                    cnt++;
                 }
             }
         }
-        return res;
+        return cnt;
     }
 };

@@ -1,4 +1,4 @@
-struct KMP2D {
+struct Kmp2D {
     string s;
     vector<vector<int>> kmp;
     void build(const string &str, int maxn) {

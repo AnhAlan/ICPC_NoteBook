@@ -1,13 +1,14 @@
+template<typename T>
 struct SegTree {
     struct Node {
-        long long val;
-        Node(long long _val) {
+        T val;
+        Node(T _val) {
             val = _val;
         }
     };
     int n;
     vector<Node> seg;
-    vector<long long> lazy;
+    vector<T> lazy;
     SegTree() : n(0){}
     SegTree(int _n) {
         n = _n;
@@ -27,7 +28,7 @@ struct SegTree {
             lazy[id] = 0;
         }
     }
-    void build(int id, int l, int r, vector<int> &a) {
+    void build(int id, int l, int r,const vector<T> &a) {
         if (l == r) {
             seg[id].val = a[l];
             return;
@@ -37,7 +38,7 @@ struct SegTree {
         build(id * 2 + 1, mid + 1, r, a);
         seg[id] = merge(seg[id * 2], seg[id * 2 + 1]);
     }
-    void update_range(int id, int l, int r, int u, int v, long long val) {
+    void update_range(int id, int l, int r, int u, int v,const T &val) {
         if (l > v || r < u) return;
         if (l >= u && r <= v) {
             seg[id].val += (r - l + 1) * val;
@@ -50,7 +51,7 @@ struct SegTree {
         update_range(id * 2 + 1, mid + 1, r, u, v, val);
         seg[id] = merge(seg[id * 2], seg[id * 2 + 1]);
     }
-    long long get_range(int id, int l, int r, int u, int v) {
+    T get_range(int id, int l, int r, int u, int v) {
         if (l > v || r < u) return 0;
         if (l >= u && r <= v) return seg[id].val;
         push_down(id, l, r);

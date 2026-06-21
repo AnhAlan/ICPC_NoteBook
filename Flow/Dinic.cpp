@@ -1,99 +1,91 @@
-struct Dinic{
-    struct OriEdge{
-        int u, v;
-        long long cap;
-        OriEdge(){}
-        OriEdge(int _u, int _v, long long _cap) : u(_u), v(_v), cap(_cap) {}
-    };
-    struct Edge{
-        int to, rev; 
-        long long cap;
-        Edge(){}
-        Edge(int _to, int _rev, long long _cap) : to(_to), rev(_rev), cap(_cap) {}
-    };
-    vector<OriEdge> edges;
-    vector<vector<Edge> > adj;
-    vector<int> level, ptr;
-    Dinic(int _n){
-        adj.assign(_n + 1, {});
-        level.assign(_n + 1, 0);
-        ptr.assign(_n + 1, 0);
-        edges.assign(_n + 1, {});
-    }
-    void add(int u, int v, long long cap){
-        Edge A = {v, (int) adj[v].size(), cap};
-        Edge B = {u, (int) adj[u].size(), 0};
-        adj[u].push_back(A);
-        adj[v].push_back(B);
-        edges.push_back({u, v, cap});
-    }
-    bool bfs(int s, int t){
-        fill(level.begin(), level.end(), -1);
-        level[s] = 0;
-        queue<int> q;
-        q.push(s);
-        while(!q.empty()){
-            int u = q.front();
-            q.pop();
-            for(Edge &e : adj[u]){
-                if(e.cap > 0 && level[e.to] == -1){
-                    level[e.to] = level[u] + 1;
-                    q.push(e.to);
-                }
+template<typename T>
+struct Dinic : public flow_graph<T>{
+   using flow_graph<T>::g;
+   using flow_graph<T>::edges;
+   using flow_graph<T>::n;
+   using flow_graph<T>::st;
+   using flow_graph<T>::fin;
+   using flow_graph<T>::EPS;
+   vector<int> level;
+   vector<int> ptr;
+   Dinic(int _n, int _st, int _fin) : flow_graph<T>(_n, _st, _fin){
+      level.resize(_n + 1);
+      ptr.resize(_n + 1);
+   }
+ 
+   bool bfs(){
+      fill(level.begin(), level.end(), -1);
+      queue<int> q;
+      q.push(st);
+      level[st] = 0;
+      while(!q.empty()){
+         int u = q.front(); q.pop();
+         for(int id : g[u]){
+            auto &e = edges[id];
+            if(level[e.to] == -1 && e.cap - e.f > EPS){
+               level[e.to] = level[u] + 1;
+               q.push(e.to);
             }
-        }
-        return level[t] != -1;
-    }
-    long long dfs(int u, int t, long long pushed){
-        if(!pushed) return 0;
-        if(u == t) return pushed;
-        for(int &i = ptr[u]; i < (int) adj[u].size(); i++){
-            Edge &e = adj[u][i];
-            if(e.cap <= 0 || level[e.to] != level[u] + 1) continue;
-            long long tr = dfs(e.to, t, min(pushed, e.cap));
-            if(tr == 0) continue;
-            e.cap -= tr;
-            adj[e.to][e.rev].cap += tr;
-            return tr;
-        }
-        level[u] = -1;
-        return 0;
-    }
-    long long max_flow(int s, int t){
-        long long flow = 0;
-        while(bfs(s, t)){
-            fill(ptr.begin(), ptr.end(), 0);
-            long long pushed;
-            while((pushed = dfs(s, t, numeric_limits<long long>::max()))){
-                flow += pushed;
-            }
-        }
-        return flow;
-    }
-    vector<int> min_cut_side(int s){
-        vector<int> vis((int) adj.size(), 0);
-        queue<int> q;
-        q.push(s);
-        vis[s] = 1;
-        while(!q.empty()){
-            int u = q.front(); q.pop();
-            for(auto &e : adj[u]){
-                if(e.cap > 0 && !vis[e.to]){
-                    vis[e.to] = 1;
-                    q.push(e.to);
-                }
-            }
-        }
-        return vis;
-    }
-    vector<pair<int,int>> get_min_cut_edges(int s){
-        vector<int> vis = min_cut_side(s);
-        vector<pair<int,int>> cut;
-        for(auto &e : edges){
-            if(vis[e.u] && !vis[e.v]){
-                cut.push_back({e.u, e.v});
-            }
-        }
-        return cut;
-    }
+         }
+      }
+      return level[fin] != -1;
+   }
+ 
+   T dfs(int u, T pushed){
+      if(pushed <= EPS) return 0;
+      if(u == fin) return pushed;
+      for(int &i = ptr[u]; i < (int)g[u].size(); i++){
+         int id = g[u][i];
+         auto &e = edges[id];
+         if(level[e.to] != level[u] + 1) continue;
+         T rem = e.cap - e.f;
+         if(rem <= EPS) continue;
+         T tr = dfs(e.to, min(pushed, rem));
+         if(tr <= EPS) continue;
+         e.f += tr;
+         edges[id ^ 1].f -= tr;
+         return tr;
+      }
+      return 0;
+   }
+   T max_flow(){
+      this->flow = 0;
+      while(bfs()){
+         fill(ptr.begin(), ptr.end(), 0);
+         while(true){
+            T pushed = dfs(st, numeric_limits<T>::max() / 2);
+            if(pushed <= EPS) break;
+            this->flow += pushed;
+         }
+      }
+      return this->flow;
+   }
+   vector<int> min_cut_side() {
+      vector<int> vis(n + 1, 0);
+      queue<int> q;
+      q.push(st);
+      vis[st] = 1;
+      while (!q.empty()) {
+         int u = q.front(); q.pop();
+         for (int id : g[u]) {
+               auto &e = edges[id];
+               if (!vis[e.to] && e.cap - e.f > EPS) {
+                  vis[e.to] = 1;
+                  q.push(e.to);
+               }
+         }
+      }
+      return vis;
+   }
+   vector<pair<int,int>> min_cut_edges() {
+      vector<int> vis = min_cut_side();
+      vector<pair<int,int>> cut;
+      for (int id = 0; id < (int)edges.size(); id += 2) {
+         auto &e = edges[id];
+         if (vis[e.from] && !vis[e.to]) {
+            cut.push_back({e.from, e.to});
+         }
+      }
+      return cut;
+   }
 };

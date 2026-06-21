@@ -1,7 +1,7 @@
 template<typename T>
 struct Hld {
-   const forest<T> &f;
-   SegTree st;
+    const forest<T> &f;
+    const SegTree &st;
     int n;
     vector<int> par, high;
     vector<int> heavy, head, pos;
@@ -57,7 +57,7 @@ struct Hld {
         dfs(root, 0);
         dfs_hld(root, root);
     }
-    void build_node(vector<int> &a) {
+    void build_node(const vector<T> &a) {
         vector<int> v(n + 1);
         assert((int) a.size() - 1 == n);
         for (int i = 1; i <= n; i++) {
@@ -66,16 +66,16 @@ struct Hld {
         st.build(1, 1, n, v);
     }
     void build_edges() {
-        vector<int> v(n + 1);
+        vector<T> v(n + 1);
         for (int i = 2; i <= n; i++) {
             int id = parId[i];
-            long long w = f.edges[id].cost;
+            T w = f.edges[id].cost;
             v[pos[i]] = w;
         }
         st.build(1, 1, n, v);
     }
     T get_node(int u, int v) {
-        long long res = 0;
+        T res = 0;
         while (head[u] != head[v]) {
             if (high[head[u]] < high[head[v]]) swap(u, v);
             res += st.get_range(1, 1, n, pos[head[u]], pos[u]);
@@ -86,7 +86,7 @@ struct Hld {
         return res;
     }
     T get_edges(int u, int v) {
-        long long res = 0;
+        T res = 0;
         while (head[u] != head[v]) {
             if (high[head[u]] < high[head[v]]) swap(u, v);
             res += st.get_range(1, 1, n, pos[head[u]], pos[u]);
@@ -97,7 +97,7 @@ struct Hld {
         res += st.get_range(1, 1, n, pos[u] + 1, pos[v]);
         return res;
     }
-    void update_node_range(int u, int v, long long w) {
+    void update_node_range(int u, int v, T w) {
         while (head[u] != head[v]) {
             if (high[head[u]] < high[head[v]]) swap(u, v);
             st.update_range(1, 1, n, pos[head[u]], pos[u], w);
@@ -106,7 +106,7 @@ struct Hld {
         if (high[u] > high[v]) swap(u, v);
         st.update_range(1, 1, n, pos[u], pos[v], w);
     }
-    void update_edges_range(int u, int v, long long w) {
+    void update_edges_range(int u, int v, T w) {
         while (head[u] != head[v]) {
             if (high[head[u]] < high[head[v]]) swap(u, v);
             st.update_range(1, 1, n, pos[head[u]], pos[u], w);

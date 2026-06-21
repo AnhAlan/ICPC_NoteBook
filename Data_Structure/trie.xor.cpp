@@ -19,7 +19,7 @@ void insert(int k){
     int cur = root;
     node[cur].cnt++;
     for(int i = 30; i >= 0; i--){
-        int b = bit(k,i);
+        int b = ((k >> i) & 1);
         if(node[cur].child[b] == -1){
             node[cur].child[b] = create();
         }
@@ -34,7 +34,7 @@ void insert(int k){
         + Prefer going to the child with bit 0 (because min number has more 0s)
         + If child 0 does not exist, go to child 1
     - If we go to child 1, set the corresponding bit in ans:
-        ans |= MASK(i)
+        ans |= (1ll < i)
 */
 
 int getmin(){
@@ -44,7 +44,7 @@ int getmin(){
         if(node[cur].child[0] != -1){
             cur = node[cur].child[0];
         }else{
-            ans |= MASK(i);
+            ans |= (1ll < i);
             cur = node[cur].child[1];
         }
     }
@@ -52,7 +52,7 @@ int getmin(){
 }
 
 /*
-    like the same getmin, but priority bit 1 -> save bit 1 |= MASK(i);
+    like the same getmin, but priority bit 1 -> save bit 1 |= (1ll < i);
     else go bit 0
 */
 int getmax(){
@@ -60,7 +60,7 @@ int getmax(){
     int ans = 0;
     for(int i = 30; i >= 0; i--){
         if(node[cur].child[1] != -1){
-            ans |= MASK(i);
+            ans |= (1ll < i);
             cur = node[cur].child[1];
         }else{
             cur = node[cur].child[0];
@@ -92,7 +92,7 @@ int getmin_kth(int k){
             if(nxt != -1){
                 k -= cnt_b;
             }
-            ans |= MASK(i);
+            ans |= (1ll < i);
             cur = node[cur].child[b ^ 1];
         }
         
@@ -116,7 +116,7 @@ int getmax_kth(int k){
         }
         if(cnt_bit >= k){
             cur = nxt; //continue go bit 1
-            ans |= MASK(i); //take bit 1 in that pos
+            ans |= (1ll < i); //take bit 1 in that pos
         }else{
             if(nxt != -1){
                 k -= cnt_bit;
@@ -134,7 +134,7 @@ int getmin_kth_xor(int k){
     int ans = 0;
     int cur = 0;
     for(int i = 30; i >= 0; i--){
-        int b = bit(xor_mask,i);
+        int b = ((k >> xor_mask) & 1);
         //int want = b ^ 1;
         int nxt = node[cur].child[b];
         int cnt_bit = 0;
@@ -147,7 +147,7 @@ int getmin_kth_xor(int k){
             if(nxt != -1){
                 k -= cnt_bit;
             }
-            ans |= MASK(i);
+            ans |= (1ll < i);
             cur = node[cur].child[b ^ 1];
         }
     }
@@ -160,7 +160,7 @@ int getmax_kth_xor(int k){
     int ans = 0;
     int cur = 0;
     for(int i=30 ;i >= 0; i--){
-        int b = bit(xor_mask,i);
+        int b = ((k >> xor_mask) & 1);
         int want = b ^ 1;
         int nxt = node[cur].child[want];
         int cnt_bit = 0;
@@ -169,7 +169,7 @@ int getmax_kth_xor(int k){
         }
         if(cnt_bit >= k){
             cur = nxt;
-            ans |= MASK(i);
+            ans |= (1ll < i);
         }else{
             if(nxt != -1){
                 k -= cnt_bit;

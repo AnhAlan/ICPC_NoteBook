@@ -25,10 +25,8 @@ struct Hash {
         }
     }
     pair<long long, long long> get_hash(int l, int r) {
-        long long x1 =
-        (has1[r] - has1[l - 1] * pw1[r - l + 1]) % MOD1;
-        long long x2 =
-        (has2[r] - has2[l - 1] * pw2[r - l + 1]) % MOD2;
+        long long x1 = (has1[r] - has1[l - 1] * pw1[r - l + 1]) % MOD1;
+        long long x2 = (has2[r] - has2[l - 1] * pw2[r - l + 1]) % MOD2;
         if (x1 < 0) x1 += MOD1;
         if (x2 < 0) x2 += MOD2;
         return {x1, x2};

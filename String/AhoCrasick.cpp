@@ -24,7 +24,7 @@ struct AhoCorasick {
     Trienode* create() {
         return &node[cnt++];
     }
-    void add_string(const string &s, int id) {
+    void add(const string &s, int id) {
         Trienode* cur = root;
         for (char c : s) {
             int x = c - 'a';

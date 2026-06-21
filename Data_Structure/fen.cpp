@@ -1,11 +1,12 @@
 template<typename T>
-struct Fenwick{
+struct FenWick{
     int n;
     vector<T> bitMul, bitAdd;
-    Fenwick(int _n){
+    FenWick(){}
+    FenWick(int _n){
         n = _n;
-        bitMul.assign(n + 1, 0);
-        bitAdd.assign(n + 1, 0);
+        bitMul.assign(n + 2, 0);
+        bitAdd.assign(n + 2, 0);
     }
     void update(vector<T> &bit, int i, T v){
         for(; i <= n; i += (i & -i)) bit[i] += v;

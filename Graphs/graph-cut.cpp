@@ -41,7 +41,8 @@ struct GraphCut{
         return true;
     }
     void dfs(int u, int par_id = -1){
-        low[u] = num[u] = ++cnt;
+        low[u] = n + 1; // low[u] = num[u] = ++cnt is bad
+        num[u] = ++cnt;
         in[u] = cnt;
         for(int id : g.adj[u]){
             if(id == par_id) continue;
@@ -100,27 +101,30 @@ struct GraphCut{
         }
         return u;
     }
+    //true if u can not to v if cut 
     bool check_Articu(int u, int v, int cut){
-        if(find(u) != find(v)) return false;
-        if(!isArticu[cut]) return false;
+        if(find(u) != find(v)) return false; 
+        if(!isArticu[cut]) return false;     
         if(u == cut || v == cut) return false;
-        int childA = -1, childB = -1;
-        if(u != cut && in_subTree(u, cut)){
-            childA = jump(u, high[u] - high[cut] - 1);
+        int compA = 0, compB = 0;
+        if(in_subTree(cut, u)){
+            int childA = jump(u, high[u] - high[cut] - 1);
+            if(low[childA] >= num[cut]) compA = childA;
+            else compA = 0;
         }
-        if(v != cut && in_subTree(v, cut)){
-            childB = jump(v, high[v] - high[cut] - 1);
+        if(in_subTree(cut, v)){
+            int childB = jump(v, high[v] - high[cut] - 1);
+            if(low[childB] >= num[cut]) compB = childB;
+            else compB = 0;
         }
-        if (childA > 0 && low[childA] < num[cut]) childA = -1;
-        if (childB > 0 && low[childB] < num[cut]) childB = -1;
-        return childA != childB;
+        return compA != compB;
     }
     bool check_bridge(int u, int v, int cut_u, int cut_v){
         if(find(u) != find(v)) return false;
         int a = cut_u, b = cut_v;
         if(a > b) swap(a, b);
         int idx = lower_bound(sored_edges.begin(), sored_edges.end(), 
-                    make_pair(make_pair(a, b), INT_MIN)) - sored_edges.begin();
+                              pair<pair<int,int>, int>{{a, b}, INT_MIN}) - sored_edges.begin();    
         if(idx >= (int)sored_edges.size() || sored_edges[idx].first != make_pair(a, b)) return false;  
         int id = sored_edges[idx].second; 
         if(!isBridge[id]) return false;

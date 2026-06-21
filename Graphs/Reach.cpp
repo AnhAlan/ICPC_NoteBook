@@ -1,43 +1,65 @@
-/*
-    256MB -> maxn = 40000
-    512MB -> maxn = 57000
-*/
-static const int MAXN = 1003;
-struct Reach {
+template<int MAXS>
+struct ReachSCC {
+    const Scc<int> &s;
     int n;
-    vector<int> adj[MAXN];
-    bitset<MAXN> reach[MAXN];
-    Reach(int _n): n(_n) {}
-    void addEdge(int u, int v) {
-        adj[u].push_back(v);
-    }
-    void build() {
-        for(int i = 1; i <= n; i++) {
+    bitset<MAXS> reach[MAXS];
+    vector<int> rev[MAXS];
+    vector<int> topo;
+    ReachSCC(const Scc<int> &_s) : s(_s) {
+        n = s.sccCnt;
+        for (int i = 1; i <= n; i++) {
+            reach[i].reset();
             reach[i][i] = 1;
-            for(int v : adj[i]) {
-                reach[i][v] = 1;
+        }
+        for (int u = 1; u <= n; u++) {
+            for (int v : s.dag[u]) {
+                rev[v].push_back(u);
             }
         }
-        for(int k = 1; k <= n; k++) {
-            for(int i = 1; i <= n; i++) {
-                if(reach[i][k]) {
-                    reach[i] |= reach[k];
-                }
+        vector<int> indeg(n + 1, 0);
+        for (int u = 1; u <= n; u++) {
+            for (int v : s.dag[u]) {
+                indeg[v]++;
+            }
+        }
+        queue<int> q;
+        for (int i = 1; i <= n; i++)
+            if (!indeg[i]) q.push(i);
+        while (!q.empty()) {
+            int u = q.front(); q.pop();
+            topo.push_back(u);
+            for (int v : s.dag[u]) {
+                if (--indeg[v] == 0)
+                    q.push(v);
+            }
+        }
+        for (int i = n - 1; i >= 0; i--) {
+            int u = topo[i];
+            for (int v : s.dag[u]) {
+                reach[u] |= reach[v];
             }
         }
     }
-    void addEdgeOnline(int u, int v) {
-        if(reach[u][v]) return;
-        reach[u][v] = 1;
-        bitset<MAXN> add = reach[v];
-        add[v] = 1;
-        for(int i = 1; i <= n; i++) {
-            if(reach[i][u]) {
-                reach[i] |= add;
+
+    void add_edge(int u, int v) {
+        int a = s.comp[u];
+        int b = s.comp[v];
+        if (reach[a][b]) return;
+        reach[a][b] = 1;
+        bitset<MAXS> add = reach[b];
+        add[b] = 1;
+        queue<int> q;
+        q.push(a);
+        while (!q.empty()) {
+            int x = q.front(); q.pop();
+            if ((reach[x] | add) == reach[x]) continue;
+            reach[x] |= add;
+            for (int p : rev[x]) {
+                q.push(p);
             }
         }
     }
     bool query(int u, int v) {
-        return reach[u][v];
+        return reach[s.comp[u]][s.comp[v]];
     }
 };
