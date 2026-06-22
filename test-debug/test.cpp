@@ -1,10 +1,10 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-mt19937_64 ran(chrono::steady_clock::now().time_since_epoch().count());
+mt19937_64 rng(chrono::steady_clock::now().time_since_epoch().count());
 long long rand(long long l,long long r){
     uniform_int_distribution<long long> dist(l,r);
-    return dist(ran);
+    return dist(rng);
 }
 
 vector<tuple<int, int, int>> random_tree(int n) {

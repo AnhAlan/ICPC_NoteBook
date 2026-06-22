@@ -3,7 +3,7 @@
 using namespace __gnu_pbds;
 
 template<class T>
-using pbdsm = tree<
+using pbdms = tree<
     pair<T,int>,
     null_type,
     less<pair<T,int>>,
@@ -12,7 +12,7 @@ using pbdsm = tree<
 >;
 
 /*
-   pbdsm<int> ms;
+   pbdms<int> ms;
    int id = 0;
    ms.insert({x, id++});
    ms.erase(ms.lower_bound({x, 0}));

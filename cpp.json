@@ -161,15 +161,15 @@
     ],
     "description": "fen2d"
   },
-  "mulset": {
-    "prefix": "mulset",
+  "pbdms": {
+    "prefix": "pbdms",
     "body": [
       "#include <ext/pb_ds/assoc_container.hpp>",
       "#include <ext/pb_ds/tree_policy.hpp>",
       "using namespace __gnu_pbds;",
       "",
       "template<class T>",
-      "using pbdsm = tree<",
+      "using pbdms = tree<",
       "    pair<T,int>,",
       "    null_type,",
       "    less<pair<T,int>>,",
@@ -178,7 +178,7 @@
       ">;",
       "",
       "/*",
-      "   pbdsm<int> ms;",
+      "   pbdms<int> ms;",
       "   int id = 0;",
       "   ms.insert({x, id++});",
       "   ms.erase(ms.lower_bound({x, 0}));",
@@ -186,7 +186,33 @@
       "   auto it = ms.find_by_order(k);",
       "*/"
     ],
-    "description": "mulset"
+    "description": "pbdms"
+  },
+  "pbds": {
+    "prefix": "pbds",
+    "body": [
+      "#include <ext/pb_ds/assoc_container.hpp>",
+      "#include <ext/pb_ds/tree_policy.hpp>",
+      "using namespace __gnu_pbds;",
+      "",
+      "template<class T>",
+      "using pbds = tree<",
+      "   T,",
+      "   null_type,",
+      "   less<T>,",
+      "   rb_tree_tag,",
+      "   tree_order_statistics_node_update",
+      ">;",
+      "",
+      "/*",
+      "   pbds<int> s;",
+      "   s.insert(x)",
+      "   s.erase(x);",
+      "   *s.find_by_order(x) // x-th smallest with 0-index",
+      "   s.order_of_key(x) // count num less < x",
+      "*/"
+    ],
+    "description": "pbds"
   },
   "rmq": {
     "prefix": "rmq",
@@ -345,32 +371,6 @@
       "};"
     ],
     "description": "seg"
-  },
-  "set": {
-    "prefix": "set",
-    "body": [
-      "#include <ext/pb_ds/assoc_container.hpp>",
-      "#include <ext/pb_ds/tree_policy.hpp>",
-      "using namespace __gnu_pbds;",
-      "",
-      "template<class T>",
-      "using pbds = tree<",
-      "   T,",
-      "   null_type,",
-      "   less<T>,",
-      "   rb_tree_tag,",
-      "   tree_order_statistics_node_update",
-      ">;",
-      "",
-      "/*",
-      "   pbds<int> s;",
-      "   s.insert(x)",
-      "   s.erase(x);",
-      "   *s.find_by_order(x) // x-th smallest with 0-index",
-      "   s.order_of_key(x) // count num less < x",
-      "*/"
-    ],
-    "description": "set"
   },
   "trie.xor": {
     "prefix": "trie.xor",
@@ -573,75 +573,8 @@
     ],
     "description": "trie.xor"
   },
-  "block": {
-    "prefix": "block",
-    "body": [
-      "const int maxn = 1e6 + 5;",
-      "int blockSize, numBlock, pos;",
-      "int blockSt[maxn], blockEn[maxn];",
-      "int blockId[maxn], blockPos[maxn];",
-      "void init(){",
-      "   int n;",
-      "   cin >> n;",
-      "   vector<int> a(n);",
-      "   for(int &x : a) cin >> x;",
-      "   blockSize = 0;",
-      "   numBlock = 0;",
-      "   pos = 0;",
-      "   while(blockSize * blockSize < n) blockSize++; // can build block with query size",
-      "   while(pos < n){",
-      "      numBlock++;",
-      "      blockSt[numBlock] = pos + 1;",
-      "      blockEn[numBlock] = min(pos + blockSize, n);",
-      "      pos += blockSize;",
-      "      int tmp = 0;",
-      "      for(int i = blockSt[numBlock]; i <= blockEn[numBlock]; i++){",
-      "         blockId[i] = numBlock;",
-      "         blockPos[i] = ++tmp;",
-      "      }",
-      "   }",
-      "   /*",
-      "      if build block with query",
-      "      each block has [add, get, add]",
-      "      for i = 1 -> numBlock",
-      "         for j = blockSt[i] -> blockEn[i]",
-      "            if query[j] == get",
-      "               process",
-      "                  for k = blockSt[i] -> k < j",
-      "                     process ADD",
-      "               process get with add",
-      "            cout << ans",
-      "         after block j done -> process update add (O(log n))",
-      "         after j done -> i++ ",
-      "   */",
-      "}",
-      "// process build block with array",
-      "void solve(int l, int r){",
-      "   if(blockId[l] == blockId[r]){",
-      "      // l r same block -> brute force",
-      "      for(int i = l; i <= r; i++){",
-      "",
-      "      }",
-      "      return;",
-      "   }",
-      "   //process block l",
-      "   for(int i = l; i <= blockEn[blockId[l]]; i++){",
-      "",
-      "   }",
-      "   //process block middle ",
-      "   for(int i = blockId[l] + 1; i <= blockId[r] - 1; i++){",
-      "",
-      "   }",
-      "   //process block r",
-      "   for(int i = blockSt[blockId[r]]; i <= r; i++){",
-      "",
-      "   }",
-      "}"
-    ],
-    "description": "block"
-  },
-  "hiberOrd": {
-    "prefix": "hiberOrd",
+  "mo": {
+    "prefix": "mo",
     "body": [
       "long long hiberOrd(int x, int y, int pow, int rotate) {",
       "    if (pow == 0) return 0;",
@@ -671,26 +604,7 @@
       "    }",
       "};"
     ],
-    "description": "hiberOrd"
-  },
-  "sqrt": {
-    "prefix": "sqrt",
-    "body": [
-      "int block; // block = sqrt(n)",
-      "struct Query{",
-      "    int l, r, id;",
-      "    Query(){}",
-      "    Query(int _l, int _r, int _id) : l(_l), r(_r), id(_id) {}",
-      "    bool operator < (const Query &other){",
-      "        int blockA = l / block;",
-      "        int blockB = other.l / block;",
-      "        if (blockA != blockB) return blockA < blockB;",
-      "        return r < other.r;",
-      "    }",
-      "};",
-      ""
-    ],
-    "description": "sqrt"
+    "description": "mo"
   },
   "Dinic-old": {
     "prefix": "Dinic-old",
@@ -2328,7 +2242,6 @@
       "    undigraph(int _n) : graph<T>(_n){}",
       "    int add(int from, int to, T cost = 1){",
       "        int id = (int) edges.size();",
-      "        assert(id < n - 1);",
       "        adj[from].push_back(id);",
       "        adj[to].push_back(id);",
       "        edges.push_back({from, to, cost});",
@@ -2533,33 +2446,6 @@
     ],
     "description": "combi"
   },
-  "Eratosthenes": {
-    "prefix": "Eratosthenes",
-    "body": [
-      "struct Sieve {",
-      "    int n;",
-      "    vector<bool> isPrime;",
-      "    Sieve(int _n) {",
-      "        n = _n;",
-      "        isPrime.assign(n + 1, true);",
-      "    }",
-      "    void build_sieve() {",
-      "        isPrime[0] = isPrime[1] = false;",
-      "        for (int i = 2; i * i <= n; i++) {",
-      "            if (isPrime[i]) {",
-      "                for (int j = i * i; j <= n; j += i) {",
-      "                    isPrime[j] = false;",
-      "                }",
-      "            }",
-      "        }",
-      "    }",
-      "    bool check_prime(int x) {",
-      "        return isPrime[x];",
-      "    }",
-      "};"
-    ],
-    "description": "Eratosthenes"
-  },
   "Pollard": {
     "prefix": "Pollard",
     "body": [
@@ -2648,6 +2534,33 @@
       "*/"
     ],
     "description": "Pollard"
+  },
+  "sieve": {
+    "prefix": "sieve",
+    "body": [
+      "struct Sieve {",
+      "    int n;",
+      "    vector<bool> isPrime;",
+      "    Sieve(int _n) {",
+      "        n = _n;",
+      "        isPrime.assign(n + 1, true);",
+      "    }",
+      "    void build_sieve() {",
+      "        isPrime[0] = isPrime[1] = false;",
+      "        for (int i = 2; i * i <= n; i++) {",
+      "            if (isPrime[i]) {",
+      "                for (int j = i * i; j <= n; j += i) {",
+      "                    isPrime[j] = false;",
+      "                }",
+      "            }",
+      "        }",
+      "    }",
+      "    bool check_prime(int x) {",
+      "        return isPrime[x];",
+      "    }",
+      "};"
+    ],
+    "description": "sieve"
   },
   "spf": {
     "prefix": "spf",
@@ -3172,6 +3085,17 @@
     ],
     "description": "qa"
   },
+  "rng": {
+    "prefix": "rng",
+    "body": [
+      "mt19937_64 rng(chrono::steady_clock::now().time_since_epoch().count());",
+      "long long rand(long long l,long long r){",
+      "    uniform_int_distribution<long long> dist(l,r);",
+      "    return dist(rng);",
+      "}"
+    ],
+    "description": "rng"
+  },
   "tem": {
     "prefix": "tem",
     "body": [
@@ -3192,10 +3116,10 @@
       "#include <bits/stdc++.h>",
       "using namespace std;",
       "",
-      "mt19937_64 ran(chrono::steady_clock::now().time_since_epoch().count());",
+      "mt19937_64 rng(chrono::steady_clock::now().time_since_epoch().count());",
       "long long rand(long long l,long long r){",
       "    uniform_int_distribution<long long> dist(l,r);",
-      "    return dist(ran);",
+      "    return dist(rng);",
       "}",
       "",
       "vector<tuple<int, int, int>> random_tree(int n) {",
