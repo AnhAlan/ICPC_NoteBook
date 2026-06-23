@@ -4,7 +4,7 @@ class forest : public graph<T> {
     using graph<T>:: adj;
     using graph<T>:: edges;
     using graph<T>:: n;
-    forest(int _n) : graph<T>(_n){}
+    forest(int _n = 0) : graph<T>(_n){}
     int add(int from, int to, T cost = 1){
         int id = (int) edges.size();
         assert(id < n - 1);

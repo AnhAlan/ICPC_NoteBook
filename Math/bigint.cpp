@@ -1,6 +1,3 @@
-#include <bits/stdc++.h>
-using namespace std;
-
 struct BigInt {
     static const int base = 1e9;
     vector<int> a;  
@@ -12,7 +9,6 @@ struct BigInt {
     static int abs_cmp(const BigInt &x, const BigInt &y) {
         if (x.a.size() != y.a.size())
             return x.a.size() < y.a.size() ? -1 : 1;
-
         for (int i = (int)x.a.size() - 1; i >= 0; i--) {
             if (x.a[i] != y.a[i])
                 return x.a[i] < y.a[i] ? -1 : 1;
@@ -31,7 +27,6 @@ struct BigInt {
         }
         return res;
     }
-
     static BigInt abs_sub(const BigInt &x, const BigInt &y) {
         BigInt res = x;
         long long carry = 0;
@@ -48,25 +43,22 @@ struct BigInt {
         return res;
     }
 
-    BigInt(long long v = 0) { *this = v; }
-
-    BigInt& operator=(long long v) {
-        a.clear();
-        sign = 1;
-        if (v < 0) sign = -1, v = -v;
+    BigInt(__int128 v = 0) { *this = v; }
+    BigInt& operator=(__int128 v) {
+        a.clear(); sign = 1;
+        if (v < 0) { sign = -1; v = -v; }
         if (v == 0) return *this;
-        while (v) {
-            a.push_back(v % base);
+        while (v > 0) {
+            a.push_back((int)(v % base));
             v /= base;
         }
         return *this;
     }
-
     void read(const string &s) {
-        a.clear();
-        sign = 1;
+        a.clear(); sign = 1;
         int i = 0;
-        if (s[i] == '-') sign = -1, i++;
+        if (s.empty()) return;
+        if (s[i] == '-') { sign = -1; i++; }
         for (int j = (int)s.size(); j > i; j -= 9) {
             int l = max(i, j - 9);
             long long x = 0;
@@ -76,7 +68,6 @@ struct BigInt {
         }
         trim();
     }
-
     friend ostream& operator<<(ostream &os, const BigInt &v) {
         if (v.a.empty()) return os << 0;
         if (v.sign == -1) os << '-';
@@ -85,41 +76,38 @@ struct BigInt {
             os << setw(9) << setfill('0') << v.a[i];
         return os;
     }
+    friend istream& operator>>(istream &is, BigInt &v) {
+        string s; if (is >> s) v.read(s);
+        return is;
+    }
 
-    friend bool operator<(const BigInt &a, const BigInt &b) {
-        if (a.sign != b.sign)
-            return a.sign < b.sign;
-
+    friend bool operator< (const BigInt &a, const BigInt &b) {
+        if (a.sign != b.sign) return a.sign < b.sign;
         int cmp = abs_cmp(a, b);
-        if (a.sign == 1) return cmp < 0;
-        return cmp > 0;
+        return a.sign == 1 ? cmp < 0 : cmp > 0;
     }
-
-    friend bool operator==(const BigInt &a, const BigInt &b) {
-        return a.sign == b.sign && a.a == b.a;
-    }
+    friend bool operator> (const BigInt &a, const BigInt &b) { return b < a; }
+    friend bool operator<=(const BigInt &a, const BigInt &b) { return ! (b < a); }
+    friend bool operator>=(const BigInt &a, const BigInt &b) { return ! (a < b); }
+    friend bool operator==(const BigInt &a, const BigInt &b) { return a.sign == b.sign && a.a == b.a; }
+    friend bool operator!=(const BigInt &a, const BigInt &b) { return ! (a == b); }
 
     BigInt operator+(const BigInt &v) const {
         BigInt res;
         if (sign == v.sign) {
-            res = abs_add(*this, v);
-            res.sign = sign;
+            res = abs_add(*this, v); res.sign = sign;
         } else {
             if (abs_cmp(*this, v) >= 0) {
-                res = abs_sub(*this, v);
-                res.sign = sign;
+                res = abs_sub(*this, v); res.sign = sign;
             } else {
-                res = abs_sub(v, *this);
-                res.sign = v.sign;
+                res = abs_sub(v, *this); res.sign = v.sign;
             }
         }
-        res.trim();
-        return res;
+        res.trim(); return res;
     }
 
     BigInt operator-(const BigInt &v) const {
-        BigInt nv = v;
-        nv.sign *= -1;
+        BigInt nv = v; nv.sign *= -1;
         return *this + nv;
     }
 
@@ -131,13 +119,11 @@ struct BigInt {
             long long carry = 0;
             for (size_t j = 0; j < v.a.size() || carry; j++) {
                 long long cur = res.a[i + j] + carry;
-                if (j < v.a.size())
-                    cur += 1LL * a[i] * v.a[j];
+                if (j < v.a.size()) cur += 1LL * a[i] * v.a[j];
                 res.a[i + j] = cur % base;
                 carry = cur / base;
             }
         }
-        res.trim();
-        return res;
+        res.trim(); return res;
     }
 };
