@@ -4,6 +4,8 @@ struct Lca{
     int n, cnt, LOG;
     vector<int> high, in, out, node;
     vector<vector<int> > minH;
+    vector<int> comp;
+    vector<bool> vis;
     Lca(const forest<T> &_f) : f(_f), n(f.n){
         assert(n > 0);
         LOG = 31 - __builtin_clz(2 * n + 5) + 1;
@@ -13,15 +15,19 @@ struct Lca{
         in.resize(n + 1);
         out.resize(n + 1);
         minH.assign(2 * n + 5, vector<int> (LOG + 1));
+        comp.resize(n + 1);
+        vis.assign(n + 1, false);
     }
-    void dfs(int u, int p){
+    void dfs(int u, int p, int cid){
+        com[u] = cid
+        vis[u] = true;
         node[++cnt] = u;
         in[u] = cnt;
         for(int id : f.adj[u]){
             int v = f.edges[id].from ^ f.edges[id].to ^ u;
             if(v == p) continue;
             high[v] = high[u] + 1;
-            dfs(v, u);
+            dfs(v, u, cid);
             node[++cnt] = u;
         }
         out[u] = cnt;
@@ -29,18 +35,26 @@ struct Lca{
     int minHigh(int u, int v){
         return high[u] < high[v] ? u : v;
     }
-    void build_lca(int root = 1){
+    void build(){
         high[0] = -1;
-        high[root] = 0; 
-        dfs(root, -1);
-        for(int i = 1; i <= cnt; i++) minH[i][0] = node[i];
-        for(int j = 1; j <= LOG; j++){
-            for(int i = 1; i <= cnt - (1 << j) + 1; i++){
+        int cid = 0;
+        for (int i = 1; i <= n; i++){
+            if(!vis[i]){
+                high[i] = 0;
+                dfs(i, -1, ++cid);
+            }
+        }
+        for (int i = 1; i <= cnt; i++){
+            minH[i][0] = node[i];
+        }
+        for (int j = 1; j <= LOG; j++){
+            for (int i = 1; i <= cnt - (1 << j) + 1; i++){
                 minH[i][j] = minHigh(minH[i][j - 1], minH[i + (1 << (j - 1))][j - 1]);
             }
         }
     }
     int lca(int u, int v){
+        assert(comp[u] == comp[v]);
         int pu = in[u]; 
         int pv = in[v];
         if(pu > pv) swap(pu, pv);
