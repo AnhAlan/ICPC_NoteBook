@@ -1,68 +1,94 @@
-template<typename T>
+template<typename T, typename F = Merge<T> >
 struct Lca {
     const forest<T> &f;
-    int n, cnt, LOG;
-    vector<int> high, in, out, node;
-    vector<vector<int>> minH;
-    vector<int> comp;
+    int n, LOG;
+    F merge;
+    vector<vector<int> > par;
+    vector<vector<T> > lca_edges;
+    vector<int> high;
     vector<bool> vis;
+
     Lca(const forest<T> &_f) : f(_f), n(f.n) {
         assert(n > 0);
-        LOG = 31 - __builtin_clz(2 * n + 5) + 1;
-        cnt = 0;
-        high.resize(n + 1);
-        node.resize(2 * n + 5);
-        in.resize(n + 1);
-        out.resize(n + 1);
-        minH.assign(2 * n + 10, vector<int>(LOG + 1));
-        comp.resize(n + 1);
+        LOG = 31 - __builtin_clz(n);
+        par.assign(n + 1, vector<int>(LOG + 1, 0));
+        lca_edges.assign(n + 1, vector<T>(LOG + 1, merge.none()));
+        high.assign(n + 1, 0);
         vis.assign(n + 1, false);
     }
 
-    void dfs(int u, int edge_id, int cid) {
-        comp[u] = cid; 
+    void dfs(int u) {
         vis[u] = true;
-        node[++cnt] = u;
-        in[u] = cnt;
-        for (int id : f.adj[u]) {
-            if (id == edge_id) continue; 
+        for(int id : f.adj[u]) {
             int v = f.edges[id].from ^ f.edges[id].to ^ u;
+            if(v == par[u][0]) continue;
+            lca_edges[v][0] = f.edges[id].cost; 
+            par[v][0] = u;
             high[v] = high[u] + 1;
-            dfs(v, id, cid);
-            node[++cnt] = u;
+            dfs(v);
         }
-        out[u] = cnt;
-    }
-
-    int minHigh(int u, int v) {
-        return high[u] < high[v] ? u : v;
     }
 
     void build() {
         high[0] = -1;
-        int cid = 0;
         for (int i = 1; i <= n; i++) {
-            if (!vis[i]) {
+            if(!vis[i]) {
                 high[i] = 0;
-                dfs(i, -1, ++cid);
+                par[i][0] = 0;
+                lca_edges[i][0] = merge.none();
+                dfs(i);
             }
         }
-        for (int i = 1; i <= cnt; i++) {
-            minH[i][0] = node[i];
-        }
-        for (int j = 1; j <= LOG; j++) {
-            for (int i = 1; i <= cnt - (1 << j) + 1; i++) {
-                minH[i][j] = minHigh(minH[i][j - 1], minH[i + (1 << (j - 1))][j - 1]);
+        for(int j = 1; j <= LOG; j++) {
+            for(int i = 1; i <= n; i++) {
+                if(par[i][j - 1] != 0) {
+                    int p = par[i][j - 1];
+                    par[i][j] = par[p][j - 1];
+                    lca_edges[i][j] = merge(lca_edges[i][j - 1], lca_edges[p][j - 1]);
+                } else {
+                    par[i][j] = 0;
+                    lca_edges[i][j] = merge.none();
+                }
             }
         }
     }
 
     int lca(int u, int v) {
-        assert(comp[u] == comp[v]);
-        int pu = in[u]; 
-        int pv = in[v];
-        if (pu > pv) swap(pu, pv);
-        int k = 31 - __builtin_clz(pv - pu + 1);
-        return minHigh(minH[pu][k], minH[pv - (1 << k) + 1][k]);
+        if(high[u] < high[v]) swap(u, v);
+        for(int i = LOG; i >= 0; i--) {
+            if(par[u][i] != 0 && high[par[u][i]] >= high[v]) {
+                u = par[u][i];
+            }
+        }
+        if(u == v) return u;
+        for(int i = LOG; i >= 0; i--) {
+            if(par[u][i] != par[v][i]) {
+                u = par[u][i];
+                v = par[v][i];
+            }
+        }
+        return par[u][0];
+    }
+    T get_path(int u, int v) {
+        T res = merge.none();
+        if(high[u] < high[v]) swap(u, v);
+        for(int i = LOG; i >= 0; i--) {
+            if(par[u][i] != 0 && high[par[u][i]] >= high[v]) {
+                res = merge(res, lca_edges[u][i]);
+                u = par[u][i];
+            }
+        }
+        if(u == v) return res;
+        for(int i = LOG; i >= 0; i--) {
+            if(par[u][i] != par[v][i]) {
+                res = merge(res, lca_edges[u][i]);
+                res = merge(res, lca_edges[v][i]);
+                u = par[u][i];
+                v = par[v][i];
+            }
+        }
+        res = merge(res, lca_edges[u][0]);
+        res = merge(res, lca_edges[v][0]);
+        return res;
     }
 };

@@ -52,7 +52,7 @@ struct Hld {
             dfs_hld(v, v);
         }
     }
-    void build_hld(int root = 1) {
+    void build(int root = 1) {
         high[root] = 0;
         dfs(root, 0);
         dfs_hld(root, root);

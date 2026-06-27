@@ -12,14 +12,14 @@ vector<tuple<int, int, int>> random_tree(int n) {
     if (n <= 1) return edges;
     vector<int> vertices(n);
     iota(vertices.begin(), vertices.end(), 1);
-    shuffle(vertices.begin(), vertices.end(), ran);
+    shuffle(vertices.begin(), vertices.end(), rng);
     for (int i = 1; i < n; i++) {
         int u = vertices[i];
         int v = vertices[rand(0, i - 1)]; 
         long long w = rand(1, 10000);           
         edges.push_back({u, v, w});
     }
-    shuffle(edges.begin(), edges.end(), ran);
+    shuffle(edges.begin(), edges.end(), rng);
     return edges;
 }
 string random_string(int n){
@@ -30,11 +30,11 @@ string random_string(int n){
     return s;
 }
 vector<tuple<int,int,int> > random_graph(int n, int m){
-    long long max_edges = 1long long * n * (n - 1) / 2;
+    long long max_edges = 1ll * n * (n - 1) / 2;
     if (m > max_edges) m = max_edges; 
     vector<tuple<int,int,int> > adj;
     set<pair<int,int>> seen;
-    for(int i=0; i<m; i++){
+    for(int i = 0; i < m; i++){
         int u = rand(1,n);
         int v = rand(1,n);
         int w = rand(1,10);
@@ -51,12 +51,12 @@ vector<tuple<int,int,int> > random_graph(int n, int m){
 vector<int> random_vector(int n){
     vector<int> a(n);
     iota(a.begin(), a.end(), 1);
-    shuffle(a.begin(), a.end(), ran);
+    shuffle(a.begin(), a.end(), rng);
     return a;
 }
 
 int main(){
     ios_base::sync_with_stdio(false);
-    cin.tie(nulong longptr);
+    cin.tie(nullptr);
     
 }
