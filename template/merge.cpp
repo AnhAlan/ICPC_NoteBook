@@ -5,4 +5,7 @@ struct Merge{
 
         return res;
     }
+    T node() const {
+        return
+    }
 };
