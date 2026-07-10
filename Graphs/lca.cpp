@@ -1,6 +1,6 @@
 template<typename T, typename F = Merge<T> >
 struct Lca {
-    const forest<T> &f;
+    const Forest<T> &f;
     int n, LOG;
     F merge;
     vector<vector<int> > par;
@@ -8,7 +8,7 @@ struct Lca {
     vector<int> high;
     vector<bool> vis;
 
-    Lca(const forest<T> &_f) : f(_f), n(f.n) {
+    Lca(const Forest<T> &_f) : f(_f), n(f.n) {
         assert(n > 0);
         LOG = 31 - __builtin_clz(n);
         par.assign(n + 1, vector<int>(LOG + 1, 0));

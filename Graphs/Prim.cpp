@@ -4,13 +4,13 @@ struct Prim {
         int u, v;
         T w;
     };
-    const undigraph<T> &g;
+    const Undigraph<T> &g;
     int n;
     vector<bool> used;
     vector<int> parent;
     vector<T> d;
     vector<Edge> MST;
-    Prim(const undigraph<T> &_g) : g(_g), n(_g.n) {
+    Prim(const Undigraph<T> &_g) : g(_g), n(_g.n) {
         used.assign(n + 1, false);
         parent.assign(n + 1, -1);
         d.assign(n + 1, numeric_limits<T>::max());

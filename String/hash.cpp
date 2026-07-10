@@ -14,7 +14,7 @@ struct Hash {
         has1.resize(n + 1);
         has2.resize(n + 1);
     }
-    void build_hash() {
+    void build() {
         pw1[0] = pw2[0] = 1;
         has1[0] = has2[0] = 0;
         for (int i = 1; i <= n; i++) {

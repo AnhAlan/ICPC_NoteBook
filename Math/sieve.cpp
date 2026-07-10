@@ -5,7 +5,7 @@ struct Sieve {
         n = _n;
         isPrime.assign(n + 1, true);
     }
-    void build_sieve() {
+    void build() {
         isPrime[0] = isPrime[1] = false;
         for (int i = 2; i * i <= n; i++) {
             if (isPrime[i]) {

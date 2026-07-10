@@ -116,7 +116,7 @@ struct Trie {
             }
             if(cnt_bit >= k) {
                 cur = nxt; //continue go bit 1
-                ans |= (1ll << i); //take bit 1 in that pos // Đã sửa lỗi: < thành <<
+                ans |= (1ll << i); 
             } else {
                 if(nxt != -1) {
                     k -= cnt_bit;

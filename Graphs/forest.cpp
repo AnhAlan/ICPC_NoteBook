@@ -1,10 +1,10 @@
 template<typename T>
-class forest : public graph<T> {
+class Forest : public Graph<T> {
     public:
-    using graph<T>:: adj;
-    using graph<T>:: edges;
-    using graph<T>:: n;
-    forest(int _n = 0) : graph<T>(_n){}
+    using Graph<T>:: adj;
+    using Graph<T>:: edges;
+    using Graph<T>:: n;
+    Forest(int _n = 0) : Graph<T>(_n){}
     int add(int from, int to, T cost = 1){
         int id = (int) edges.size();
         assert(id < n - 1);

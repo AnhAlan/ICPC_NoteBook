@@ -9,7 +9,7 @@ struct Kmp {
         lenT = t.size() - 1;
         kmp.assign(lenS + 1, 0);
     }
-    void build_kmp() {
+    void build() {
         int k = 0;
         for (int i = 2; i <= lenS; i++) {
             while (k > 0 && s[i] != s[k + 1]) k = kmp[k];

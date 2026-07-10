@@ -1,5 +1,5 @@
 template<typename T>
-class graph{
+class Graph{
     public:
     struct Edge{
         int from, to;
@@ -8,7 +8,7 @@ class graph{
     int n;
     vector<vector<int> > adj;
     vector<Edge> edges;
-    graph(int _n = 0) : n(_n){
+    Graph(int _n = 0) : n(_n){
         adj.resize(n + 1);
     }
     virtual int add(int from, int to, T cost = 1) = 0;

@@ -1,5 +1,5 @@
 template<typename T>
-vector<T> dijkstra(const undigraph<T> &g, int start){
+vector<T> dijkstra(const Undigraph<T> &g, int start){
     vector<T> dist(g.n + 1, numeric_limits<T>::max() / 2);
     using P = pair<T,int>;
     priority_queue<P, vector<P>,greater<P> > pq;

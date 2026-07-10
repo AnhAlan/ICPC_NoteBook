@@ -1,12 +1,12 @@
 template<typename T>
 struct Lca{
-    const forest<T> &f;
+    const Forest<T> &f;
     int n, cnt, LOG;
     vector<int> high, in, out, node;
     vector<vector<int> > minH;
     vector<int> comp;
     vector<bool> vis;
-    Lca(const forest<T> &_f) : f(_f), n(f.n){
+    Lca(const Forest<T> &_f) : f(_f), n(f.n){
         assert(n > 0);
         LOG = 31 - __builtin_clz(2 * n + 5) + 1;
         cnt = 0;

@@ -1,13 +1,13 @@
 template<typename T>
 struct GraphCut{
-    const undigraph<T> &g;
+    const Undigraph<T> &g;
     int n, m, LOG, cnt;
     vector<int> low, num, in, out, high, numChild, dsu;
     vector<bool> isBridge, isArticu;
     vector<vector<int> > par;
     vector<pair<pair<int,int> , int>> sored_edges;
     int cnt_bridge, cut_articu;
-    GraphCut(const undigraph<T> &_g) : g(_g), n(g.n), m((int) g.edges.size()){
+    GraphCut(const Undigraph<T> &_g) : g(_g), n(g.n), m((int) g.edges.size()){
         assert(n > 0);
         LOG = 31 - __builtin_clz(n) + 1;
         cnt = 0;

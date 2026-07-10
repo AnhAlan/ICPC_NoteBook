@@ -1,8 +1,8 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-#if __has_include("./lib/debug.cpp")
-    #include "./lib/debug.cpp"
+#ifdef LOCAL
+    #include "./lib/my/debug.h"
 #else
     #define debug(...) 42
 #endif

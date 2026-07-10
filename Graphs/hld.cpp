@@ -1,6 +1,6 @@
 template<typename T>
 struct Hld {
-    const forest<T> &f;
+    const Forest<T> &f;
     const SegTree &st;
     int n;
     vector<int> par, high;
@@ -9,7 +9,7 @@ struct Hld {
     vector<int> edge_to_node;
     vector<int> parId;
     int curPos;
-    Hld(const forest<T> &_f) : f(_f), n(_f.n) {
+    Hld(const Forest<T> &_f) : f(_f), n(_f.n) {
         st = SegTree(n);
         par.assign(n + 1, 0);
         high.assign(n + 1, 0);

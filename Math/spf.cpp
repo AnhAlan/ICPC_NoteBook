@@ -5,7 +5,7 @@ struct Spf {
         n = _n;
         spf.assign(n + 1, 0);
     }
-    void build_spf() {
+    void build() {
         for (int i = 2; 1LL * i * i <= n; i++) {
             if (spf[i] == 0) {
                 for (int j = i * i; j <= n; j += i) {

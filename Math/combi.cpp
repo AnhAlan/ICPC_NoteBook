@@ -19,7 +19,7 @@ struct Combi {
         }
         return res;
     }
-    void build_combi() {
+    void build() {
         fac[0] = 1;
         for (int i = 1; i <= maxn; i++) {
             fac[i] = fac[i - 1] * i % mod;

@@ -4,7 +4,7 @@ struct Floyd{
     T INF;
     vector<vector<T>> dist;
     vector<vector<int>> nxt;
-    Floyd(const digraph<T> &g){
+    Floyd(const Digraph<T> &g){
         n = g.n;
         INF = numeric_limits<T>::max() / 4;
         dist.assign(n + 1, vector<T>(n + 1, INF));
