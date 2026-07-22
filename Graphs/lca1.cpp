@@ -8,7 +8,7 @@ struct Lca{
     vector<bool> vis;
     Lca(const Forest<T> &_f) : f(_f), n(f.n){
         assert(n > 0);
-        LOG = 31 - __builtin_clz(2 * n + 5) + 1;
+        LOG = 32 - __builtin_clz(2 * n + 5) + 1;
         cnt = 0;
         high.resize(n + 1);
         node.resize(2 * n + 5);
@@ -58,7 +58,7 @@ struct Lca{
         int pu = in[u]; 
         int pv = in[v];
         if(pu > pv) swap(pu, pv);
-        int k = 31 - __builtin_clz(pv - pu + 1);
+        int k = 32 - __builtin_clz(pv - pu + 1);
         return minHigh(minH[pu][k], minH[pv - (1 << k) + 1][k]);
     }
 };

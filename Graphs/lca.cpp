@@ -1,3 +1,14 @@
+template<typename T>
+struct Merge{
+    T operator()(const T &A, const T &B) const {
+        return max(A, B);
+    }
+    T none() const {
+        return numeric_limits<T>::lowest();
+        //return numeric_limits<T>::max();
+    }
+};
+
 template<typename T, typename F = Merge<T> >
 struct Lca {
     const Forest<T> &f;
@@ -10,7 +21,7 @@ struct Lca {
 
     Lca(const Forest<T> &_f) : f(_f), n(f.n) {
         assert(n > 0);
-        LOG = 31 - __builtin_clz(n);
+        LOG = 32 - __builtin_clz(n);
         par.assign(n + 1, vector<int>(LOG + 1, 0));
         lca_edges.assign(n + 1, vector<T>(LOG + 1, merge.none()));
         high.assign(n + 1, 0);
