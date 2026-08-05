@@ -1,33 +1,41 @@
-struct Kmp {
-    string s, t;
-    int lenS, lenT;
-    vector<int> kmp;
-    Kmp(string _s, string _t) {
-        s = "#" + _s;
-        t = "#" + _t;
-        lenS = s.size() - 1;
-        lenT = t.size() - 1;
-        kmp.assign(lenS + 1, 0);
+template<typename T>
+vector<int> kmp(int n, const T &s) {
+    vector<int> res(n + 1, 0);
+    int k = 0;
+    for (int i = 2; i <= n; i++) {
+        while (k > 0 && s[i] != s[k + 1]) {
+            k = res[k];
+        }
+        if (s[i] == s[k + 1]) {
+            k++;
+        }
+        res[i] = k;
     }
-    void build() {
-        int k = 0;
-        for (int i = 2; i <= lenS; i++) {
-            while (k > 0 && s[i] != s[k + 1]) k = kmp[k];
-            if (s[i] == s[k + 1]) ++k;
-            kmp[i] = k;
+    return res;
+}
+// index 1
+template<typename T>
+vector<int> kmp(const T &s) {
+    return kmp((int)s.size() - 1, s); 
+}
+// find t in s
+template<typename T>
+vector<int> match(const T &s, const T &t, const vector<int> &kmp_t) {
+    vector<int> match_id; 
+    int n = (int)s.size() - 1;
+    int m = (int)t.size() - 1;
+    int k = 0;
+    for (int i = 1; i <= n; i++) {
+        while (k > 0 && s[i] != t[k + 1]) {
+            k = kmp_t[k];
+        }
+        if (s[i] == t[k + 1]) {
+            k++;
+        }
+        if (k == m) {
+            match_id.push_back(i - m + 1); 
+            k = kmp_t[k];
         }
     }
-    vector<int> match() {
-        vector<int> ans;
-        int k = 0;
-        for (int i = 1; i <= lenT; i++) {
-            while (k > 0 && t[i] != s[k + 1]) k = kmp[k];
-            if (t[i] == s[k + 1]) ++k;
-            if (k == lenS) {
-                ans.push_back(i - lenS + 1);
-                k = kmp[k];
-            }
-        }
-        return ans;
-    }
-};
+    return match_id;
+}

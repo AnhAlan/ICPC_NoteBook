@@ -1,13 +1,13 @@
 struct Combi {
     int maxn;
-    int mod = 1e9 + 8277;
+    int mod = 1e9 + 87;
     vector<long long> fac, inv;
     Combi(int _maxn) {
         maxn = _maxn;
         fac.resize(maxn + 1);
         inv.resize(maxn + 1);
     }
-    long long powMod(long long a, long long b) {
+    long long pow_mod(long long a, long long b) {
         long long res = 1;
         a %= mod;
         while (b) {
@@ -24,7 +24,7 @@ struct Combi {
         for (int i = 1; i <= maxn; i++) {
             fac[i] = fac[i - 1] * i % mod;
         }
-        inv[maxn] = powMod(fac[maxn], mod - 2);
+        inv[maxn] = pow_mod(fac[maxn], mod - 2);
         for (int i = maxn; i >= 1; i--) {
             inv[i - 1] = inv[i] * i % mod;
         }

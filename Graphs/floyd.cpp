@@ -4,16 +4,24 @@ struct Floyd{
     T INF;
     vector<vector<T>> dist;
     vector<vector<int>> nxt;
-    Floyd(const Digraph<T> &g){
+    Floyd(const Undigraph<T> &g){
         n = g.n;
         INF = numeric_limits<T>::max() / 4;
         dist.assign(n + 1, vector<T>(n + 1, INF));
         nxt.assign(n + 1, vector<int>(n + 1, 0));
-        for(int i = 1; i <= n; i++) dist[i][i] = 0;
+        for(int i = 1; i <= n; i++) {
+            dist[i][i] = 0;
+            nxt[i][i] = i;
+        }
         for(auto &e : g.edges){
             if(e.cost < dist[e.from][e.to]){
                 dist[e.from][e.to] = e.cost;
                 nxt[e.from][e.to] = e.to;
+            }
+            // if digraph -> delete this code
+            if(e.cost < dist[e.to][e.from]){
+                dist[e.to][e.from] = e.cost;
+                nxt[e.to][e.from] = e.from;
             }
         }
     }

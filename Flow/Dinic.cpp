@@ -42,7 +42,6 @@ struct Dinic : public Flow<T> {
         }
         return 0;
     }
-
     T max_flow() {
         this->flow = 0;
         while (bfs()) {
@@ -54,5 +53,33 @@ struct Dinic : public Flow<T> {
             }
         }
         return this->flow;
+    }
+    vector<int> min_cut_side() {
+        vector<int> vis(n + 1, false);
+        queue<int> q;
+        q.push(st);
+        vis[st] = true;
+        while (!q.empty()) {
+            int u = q.front();
+            q.pop();
+            for (int id : g[u]) {
+                auto &e = edges[id];
+                if (!vis[e.to] && e.cap - e.f > EPS) {
+                    vis[e.to] = true;
+                    q.push(e.to);
+                }
+            }
+        }
+        return vis;
+    }
+    vector<pair<int,int>> get_min_cut_edges() {
+        vector<int> vis = min_cut_side();
+        vector<pair<int,int>> cut;
+        for (int i = 0; i < (int)edges.size(); i += 2) {
+            auto &e = edges[i];
+            if (vis[e.from] && !vis[e.to] && e.cap > EPS)
+                cut.push_back({e.from, e.to});
+        }
+        return cut;
     }
 };

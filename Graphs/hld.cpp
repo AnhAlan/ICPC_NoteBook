@@ -7,7 +7,7 @@ struct Hld {
     vector<int> heavy, head, pos;
     vector<int> sz;
     vector<int> edge_to_node;
-    vector<int> parId;
+    vector<int> par_id;
     int curPos;
     Hld(const Forest<T> &_f) : f(_f), n(_f.n) {
         st = SegTree(n);
@@ -17,7 +17,7 @@ struct Hld {
         head.assign(n + 1, 0);
         pos.assign(n + 1, 0);
         sz.assign(n + 1, 0);
-        parId.assign(n + 1, 0);
+        par_id.assign(n + 1, 0);
         edge_to_node.assign(n + 5, 0);
         curPos = 0;
     }
@@ -30,7 +30,7 @@ struct Hld {
             int v = f.edges[id].from ^ f.edges[id].to ^ u;
             if (v == p) continue;
             high[v] = high[u] + 1;
-            parId[v] = id;
+            par_id[v] = id;
             dfs(v, u);
             sz[u] += sz[v];
             if (sz[v] > maxSz) {
@@ -68,7 +68,7 @@ struct Hld {
     void build_edges() {
         vector<T> v(n + 1);
         for (int i = 2; i <= n; i++) {
-            int id = parId[i];
+            int id = par_id[i];
             T w = f.edges[id].cost;
             v[pos[i]] = w;
         }

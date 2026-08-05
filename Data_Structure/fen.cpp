@@ -1,31 +1,39 @@
 template<typename T>
 struct FenWick{
     int n;
-    vector<T> bitMul, bitAdd;
+    vector<T> bit;
     FenWick(){}
     FenWick(int _n){
         n = _n;
-        bitMul.assign(n + 2, 0);
-        bitAdd.assign(n + 2, 0);
+        bit.assign(n + 1, 0);
     }
-    void update(vector<T> &bit, int i, T v){
-        for(; i <= n; i += (i & -i)) bit[i] += v;
+    void update(int i, T v){
+        for (; i <= n; i += (i & -i)){
+            bit[i] += v;
+        }
     }
-    T get(vector<T> &bit, int i){
+    T get(int i){
         T res = 0;
-        for(; i > 0; i -= (i & -i)) res += bit[i];
+        for (; i > 0; i -= (i & -i)){
+            res += bit[i];
+        }
         return res;
     }
-    void update_range(int l, int r, T v){
-        update(bitMul, l, v);
-        update(bitMul, r + 1, -v);
-        update(bitAdd, l, -v * (l - 1));
-        update(bitAdd, r + 1, v * r);
-    }
-    T get_prefix(int x){
-        return get(bitMul, x) * x + get(bitAdd, x);
-    }
     T get_range(int l, int r){
-        return get_prefix(r) - get_prefix(l - 1);
+        assert(l > 0);
+        if(l > r) return 0;
+        return get(r) - get(l - 1);
+    }
+    T kth(int k) {
+        int pos = 0;
+        int LOG = __lg(n);
+        for (int i = LOG; i >= 0; i--) {
+            int nxt = pos + (1 << i);
+            if (nxt <= n && bit[nxt] < k) {
+                pos = nxt;
+                k -= bit[nxt];
+            }
+        }
+        return pos + 1;
     }
 };

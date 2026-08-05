@@ -7,12 +7,12 @@ struct Mcmf : public Flow<T> {
     using Flow<T>::fin; 
     using Flow<T>::EPS;
     vector<T> dist, pot;
-    vector<int> parV, parE;
+    vector<int> par_v, par_e;
     Mcmf(int _n, int _st, int _fin) : Flow<T>(_n, _st, _fin) {
         dist.assign(n + 1, 0);
         pot.assign(n + 1, 0);
-        parV.resize(n + 1);
-        parE.resize(n + 1);
+        par_v.resize(n + 1);
+        par_e.resize(n + 1);
     }
     void reset_all() {
         this->reset(); 
@@ -31,7 +31,7 @@ struct Mcmf : public Flow<T> {
                 if (ed.cap - ed.f > EPS) {
                     T nd = d + ed.cost + pot[u] - pot[ed.to];
                     if (nd < dist[ed.to]) {
-                        dist[ed.to] = nd; parV[ed.to] = u; parE[ed.to] = id;
+                        dist[ed.to] = nd; par_v[ed.to] = u; par_e[ed.to] = id;
                         pq.push({nd, ed.to});
                     }
                 }
@@ -48,12 +48,12 @@ struct Mcmf : public Flow<T> {
                 if (dist[i] < numeric_limits<T>::max() / 2) pot[i] += dist[i];
             }
             T f = need - this->flow;
-            for (int v = fin; v != st; v = parV[v]) {
-                f = min(f, edges[parE[v]].cap - edges[parE[v]].f);
+            for (int v = fin; v != st; v = par_v[v]) {
+                f = min(f, edges[par_e[v]].cap - edges[par_e[v]].f);
             }
-            for (int v = fin; v != st; v = parV[v]) {
-                edges[parE[v]].f += f; 
-                edges[parE[v] ^ 1].f -= f;
+            for (int v = fin; v != st; v = par_v[v]) {
+                edges[par_e[v]].f += f; 
+                edges[par_e[v] ^ 1].f -= f;
             }
             this->flow += f;
             total_cost += f * pot[fin];

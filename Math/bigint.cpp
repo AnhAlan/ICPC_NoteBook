@@ -1,4 +1,4 @@
-struct BigInt {
+struct Big_int {
     static const int base = 1e9;
     vector<int> a;  
     int sign = 1;  
@@ -6,7 +6,7 @@ struct BigInt {
         while (!a.empty() && a.back() == 0) a.pop_back();
         if (a.empty()) sign = 1;
     }
-    static int abs_cmp(const BigInt &x, const BigInt &y) {
+    static int abs_cmp(const Big_int &x, const Big_int &y) {
         if (x.a.size() != y.a.size())
             return x.a.size() < y.a.size() ? -1 : 1;
         for (int i = (int)x.a.size() - 1; i >= 0; i--) {
@@ -15,8 +15,8 @@ struct BigInt {
         }
         return 0;
     }
-    static BigInt abs_add(const BigInt &x, const BigInt &y) {
-        BigInt res;
+    static Big_int abs_add(const Big_int &x, const Big_int &y) {
+        Big_int res;
         long long carry = 0;
         for (size_t i = 0; i < max(x.a.size(), y.a.size()) || carry; i++) {
             long long cur = carry;
@@ -27,8 +27,8 @@ struct BigInt {
         }
         return res;
     }
-    static BigInt abs_sub(const BigInt &x, const BigInt &y) {
-        BigInt res = x;
+    static Big_int abs_sub(const Big_int &x, const Big_int &y) {
+        Big_int res = x;
         long long carry = 0;
         for (size_t i = 0; i < y.a.size() || carry; i++) {
             long long cur = res.a[i] - carry - (i < y.a.size() ? y.a[i] : 0);
@@ -43,8 +43,8 @@ struct BigInt {
         return res;
     }
 
-    BigInt(__int128 v = 0) { *this = v; }
-    BigInt& operator=(__int128 v) {
+    Big_int(__int128 v = 0) { *this = v; }
+    Big_int& operator=(__int128 v) {
         a.clear(); sign = 1;
         if (v < 0) { sign = -1; v = -v; }
         if (v == 0) return *this;
@@ -68,7 +68,7 @@ struct BigInt {
         }
         trim();
     }
-    friend ostream& operator<<(ostream &os, const BigInt &v) {
+    friend ostream& operator<<(ostream &os, const Big_int &v) {
         if (v.a.empty()) return os << 0;
         if (v.sign == -1) os << '-';
         os << v.a.back();
@@ -76,24 +76,24 @@ struct BigInt {
             os << setw(9) << setfill('0') << v.a[i];
         return os;
     }
-    friend istream& operator>>(istream &is, BigInt &v) {
+    friend istream& operator>>(istream &is, Big_int &v) {
         string s; if (is >> s) v.read(s);
         return is;
     }
 
-    friend bool operator< (const BigInt &a, const BigInt &b) {
+    friend bool operator< (const Big_int &a, const Big_int &b) {
         if (a.sign != b.sign) return a.sign < b.sign;
         int cmp = abs_cmp(a, b);
         return a.sign == 1 ? cmp < 0 : cmp > 0;
     }
-    friend bool operator> (const BigInt &a, const BigInt &b) { return b < a; }
-    friend bool operator<=(const BigInt &a, const BigInt &b) { return ! (b < a); }
-    friend bool operator>=(const BigInt &a, const BigInt &b) { return ! (a < b); }
-    friend bool operator==(const BigInt &a, const BigInt &b) { return a.sign == b.sign && a.a == b.a; }
-    friend bool operator!=(const BigInt &a, const BigInt &b) { return ! (a == b); }
+    friend bool operator> (const Big_int &a, const Big_int &b) { return b < a; }
+    friend bool operator<=(const Big_int &a, const Big_int &b) { return ! (b < a); }
+    friend bool operator>=(const Big_int &a, const Big_int &b) { return ! (a < b); }
+    friend bool operator==(const Big_int &a, const Big_int &b) { return a.sign == b.sign && a.a == b.a; }
+    friend bool operator!=(const Big_int &a, const Big_int &b) { return ! (a == b); }
 
-    BigInt operator+(const BigInt &v) const {
-        BigInt res;
+    Big_int operator+(const Big_int &v) const {
+        Big_int res;
         if (sign == v.sign) {
             res = abs_add(*this, v); res.sign = sign;
         } else {
@@ -106,13 +106,13 @@ struct BigInt {
         res.trim(); return res;
     }
 
-    BigInt operator-(const BigInt &v) const {
-        BigInt nv = v; nv.sign *= -1;
+    Big_int operator-(const Big_int &v) const {
+        Big_int nv = v; nv.sign *= -1;
         return *this + nv;
     }
 
-    BigInt operator*(const BigInt &v) const {
-        BigInt res;
+    Big_int operator*(const Big_int &v) const {
+        Big_int res;
         res.sign = sign * v.sign;
         res.a.assign(a.size() + v.a.size(), 0);
         for (size_t i = 0; i < a.size(); i++) {

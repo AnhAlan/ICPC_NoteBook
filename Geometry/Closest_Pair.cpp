@@ -1,4 +1,4 @@
-long double bruteForce(vector<Point> &P, int l, int r) {
+long double brute_force(vector<Point> &P, int l, int r) {
     long double ans = 1e18;
     for (int i = l; i <= r; i++) {
         for (int j = i+1; j <= r; j++) {
@@ -7,9 +7,9 @@ long double bruteForce(vector<Point> &P, int l, int r) {
     }
     return ans;
 }
-long double closestUtil(vector<Point> &Px, vector<Point> &Py, int l, int r) {
+long double close(vector<Point> &Px, vector<Point> &Py, int l, int r) {
     int n = r - l + 1;
-    if (n <= 3) return bruteForce(Px, l, r);
+    if (n <= 3) return brute_force(Px, l, r);
     int mid = (l + r) / 2;
     long double midx = Px[mid].x;
     vector<Point> Pyl, Pyr;
@@ -17,8 +17,8 @@ long double closestUtil(vector<Point> &Px, vector<Point> &Py, int l, int r) {
         if (p.x <= midx) Pyl.push_back(p);
         else Pyr.push_back(p);
     }
-    long double dl = closestUtil(Px, Pyl, l, mid);
-    long double dr = closestUtil(Px, Pyr, mid+1, r);
+    long double dl = close(Px, Pyl, l, mid);
+    long double dr = close(Px, Pyr, mid+1, r);
     long double d = min(dl, dr);
     vector<Point> strip;
     for (auto &p : Py) {
@@ -31,10 +31,10 @@ long double closestUtil(vector<Point> &Px, vector<Point> &Py, int l, int r) {
     }
     return d;
 }
-long double closestPair(const vector<Point> &P) {
+long double close_pair(const vector<Point> &P) {
     int n = P.size();
     vector<Point> Px = P, Py = P;
     sort(Px.begin(), Px.end(), [](const Point &a, const Point &b){ return a.x < b.x; });
     sort(Py.begin(), Py.end(), [](const Point &a, const Point &b){ return a.y < b.y; });
-    return closestUtil(Px, Py, 0, n-1);
+    return close(Px, Py, 0, n-1);
 }

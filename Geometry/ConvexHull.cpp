@@ -1,4 +1,4 @@
-vector<Point> convexHull(vector<Point> pts) {
+vector<Point> convexHull(const vector<Point> &pts) {
     int n = pts.size();
     if (n <= 2) return pts; 
     sort(pts.begin(), pts.end());

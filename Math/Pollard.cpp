@@ -12,7 +12,7 @@ long long mod_pow(long long a, long long d, long long mod) {
     }
     return r;
 }
-bool isPrime(long long n) {
+bool is_prime(long long n) {
     if (n < 2) return false;
     for (long long p : {2,3,5,7,11,13,17,19,23,29,31,37}){
         if (n % p == 0) return n == p;
@@ -55,7 +55,7 @@ long long pollard_rho(long long n) {
 vector<long long> tmp;
 void factor(long long n) {
     if (n == 1) return;
-    if (isPrime(n)) {
+    if (is_prime(n)) {
         tmp.push_back(n);
         return;
     }
@@ -63,7 +63,7 @@ void factor(long long n) {
     factor(d);
     factor(n / d);
 }
-vector<pair<long long,long long>> getFactors(long long n) {
+vector<pair<long long,long long>> get_factors(long long n) {
     tmp.clear();
     factor(n);
     sort(tmp.begin(), tmp.end());
@@ -77,7 +77,7 @@ vector<pair<long long,long long>> getFactors(long long n) {
     return res;
 }
 /*
-    isPrime(n) -> check prime (64-bit)
-    auto fac = getFactors(n) -> factorization
+    is_prime(n) -> check prime (64-bit)
+    auto fac = get_factors(n) -> factorization
     format: {{prime, exponent}}
 */
